@@ -1,0 +1,184 @@
+DROP database IF EXISTS waifus;
+create database waifus;
+
+use waifus;
+
+create table users(
+    id_user int auto_increment not null ,
+    gender varchar(15) ,
+    adult_content tinyint not null ,
+    nickname varchar(20) not null ,
+    admin tinyint not null ,
+    name varchar(255) not null ,
+    email varchar(255) not null ,
+    password varchar(255) not null ,
+    birthday date not null ,
+    profile_photo varchar(255),
+    country varchar(100),
+    description text,
+    karma int not null ,
+    theme varchar(20),
+    activated tinyint not null ,
+    banned tinyint not null ,
+    PRIMARY KEY (id_user)
+);
+
+create table users_follows_users(
+    id_user int not null ,
+    id_follower_user int not null ,
+    date_follow date not null ,
+    foreign key (id_user) references users (id_user),
+    foreign key (id_follower_user) references users (id_user),
+    PRIMARY KEY (id_user, id_follower_user)
+);
+
+create table chats(
+    id_chat int not null auto_increment,
+    PRIMARY KEY (id_chat)
+);
+
+create table users_has_chats(
+    id_user int not null ,
+    id_chat int not null ,
+    FOREIGN KEY (id_chat) references chats (id_chat),
+    FOREIGN KEY (id_user) references users (id_user),
+    PRIMARY KEY (id_chat, id_user)
+);
+
+create table messages(
+    id_message int not null auto_increment,
+    content text not null ,
+    fk_user int not null ,
+    fk_chat int not null ,
+    time_stamp datetime not null ,
+    FOREIGN KEY (fk_user) references users (id_user),
+    FOREIGN KEY (fk_chat) references chats (id_chat),
+    PRIMARY KEY (id_message)
+);
+
+create table channels(
+    id_channel int not null auto_increment,
+    date_channel date not null ,
+    description text not null ,
+    photo varchar(255) not null ,
+    banner varchar(255) not null ,
+    name varchar(255) not null ,
+    fk_user int not null ,
+    foreign key (fk_user) references users (id_user),
+    PRIMARY KEY (id_channel)
+);
+
+create table users_mods_channels(
+    id_user int not null ,
+    id_channel int not null ,
+    foreign key (id_user) references users (id_user),
+    foreign key (id_channel) references channels (id_channel),
+    PRIMARY KEY (id_channel, id_user)
+);
+
+create table channels_banned_users(
+    id_user int not null ,
+    id_channel int not null ,
+    date_banned date not null ,
+    foreign key (id_user) references users (id_user),
+    foreign key (id_channel) references channels (id_channel),
+    PRIMARY KEY (id_channel, id_user)
+);
+
+create table users_follows_channels(
+    id_user int not null ,
+    id_channel int not null ,
+    date_banned date not null ,
+    foreign key (id_user) references users (id_user),
+    foreign key (id_channel) references channels (id_channel),
+    PRIMARY KEY (id_channel, id_user)
+);
+
+create table threads(
+    id_thread int not null auto_increment,
+    date_thread date not null ,
+    name varchar(255) not null ,
+    content text not null ,
+    fk_user int not null ,
+    fk_channel int not null ,
+    foreign key (fk_user) references users (id_user),
+    foreign key (fk_channel) references channels (id_channel),
+    primary key (id_thread)
+);
+
+create table threads_mentions_users(
+    id_thread int not null ,
+    id_user int not null ,
+    foreign key (id_thread) references threads (id_thread),
+    foreign key (id_user) references users (id_user),
+    primary key (id_user, id_thread)
+);
+
+create table users_likes_threads(
+    id_thread int not null ,
+    id_user int not null ,
+    date_likes date not null ,
+    foreign key (id_thread) references threads (id_thread),
+    foreign key (id_user) references users (id_user),
+    primary key (id_user, id_thread)
+);
+
+create table multimedia(
+    id_multimedia int not null auto_increment,
+    directory varchar(255) not null ,
+    fk_thread int,
+    foreign key (fk_thread) references threads (id_thread),
+    primary key (id_multimedia)
+);
+
+create table messages_has_multimedia(
+    id_message int not null ,
+    id_multimedia int not null ,
+    foreign key (id_multimedia) references multimedia (id_multimedia),
+    foreign key (id_message) references messages (id_message),
+    primary key (id_message, id_multimedia)
+);
+
+create table tags(
+    id_tag int not null auto_increment,
+    name varchar(255) not null ,
+    primary key (id_tag)
+);
+
+create table threads_has_tags(
+    id_thread int not null ,
+    id_tag int not null ,
+    foreign key (id_tag) references tags (id_tag),
+    foreign key (id_thread) references threads (id_thread),
+    primary key (id_thread, id_tag)
+);
+
+create table comments(
+    id_comment int not null auto_increment,
+    content text not null ,
+    date_comment date not null ,
+    fk_user int not null ,
+    fk_thread int not null ,
+    fk_comment int,
+    foreign key (fk_user) references users (id_user),
+    foreign key (fk_thread) references  threads (id_thread),
+    foreign key (fk_comment) references comments (id_comment),
+    primary key (id_comment)
+);
+
+create table comments_mentions_users(
+    id_comment int not null ,
+    id_user int not null ,
+    foreign key (id_comment) references comments (id_comment),
+    foreign key (id_user) references users (id_user),
+    primary key (id_user, id_comment)
+);
+
+create table users_likes_comments(
+    id_comment int not null ,
+    id_user int not null ,
+    date_likes date not null ,
+    foreign key (id_comment) references comments (id_comment),
+    foreign key (id_user) references users (id_user),
+    primary key (id_user, id_comment)
+);
