@@ -63,6 +63,7 @@ create table channels(
     photo varchar(255) not null ,
     banner varchar(255) not null ,
     name varchar(255) not null ,
+    deleted tinyint not null,
     fk_user int not null ,
     foreign key (fk_user) references users (id_user),
     PRIMARY KEY (id_channel)
@@ -99,6 +100,7 @@ create table threads(
     date_thread date not null ,
     name varchar(255) not null ,
     content text not null ,
+    deleted tinyint not null,
     fk_user int not null ,
     fk_channel int not null ,
     foreign key (fk_user) references users (id_user),
@@ -157,6 +159,7 @@ create table comments(
     id_comment int not null auto_increment,
     content text not null ,
     date_comment date not null ,
+    deleted tinyint not null,
     fk_user int not null ,
     fk_thread int not null ,
     fk_comment int,
