@@ -34,6 +34,13 @@ public class User {
         this.password = password;
     }
 
+    public User(int idUser, String email, boolean activated, boolean banned) {
+        this.idUser = idUser;
+        this.email = email;
+        this.activated = activated;
+        this.banned = banned;
+    }
+
     public int getIdUser() {
         return idUser;
     }

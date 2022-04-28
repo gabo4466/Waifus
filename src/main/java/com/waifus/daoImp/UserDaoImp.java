@@ -1,11 +1,19 @@
 package com.waifus.daoImp;
 
+import com.waifus.DBConnection;
 import com.waifus.dao.GenericDao;
 import com.waifus.model.User;
 
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UserDaoImp implements GenericDao<User> {
+    private Connection connection;
+
+    public UserDaoImp() throws SQLException, ClassNotFoundException {
+        this.connection = DBConnection.getConnection();
+    }
+
     @Override
     public boolean update(User obj) {
         return false;
@@ -36,7 +44,22 @@ public class UserDaoImp implements GenericDao<User> {
         return null;
     }
 
-    public boolean logIn(){
-        return false;
+    public User logIn (User userNotLogged) throws SQLException {
+        User result;
+        String query = "select id_user, email, banned, activated from waifus.users where email=? and password=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, userNotLogged.getEmail());
+        stmt.setString(2, userNotLogged.getPassword());
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()){
+            User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("banned"), rs.getBoolean("activated"));
+            System.out.println("El usuario existe, esto va funcionando");
+            result = userExists;
+            //  VALIDAR SI ESTA BANEADO O ACTIVADO
+        }else{
+            // CONTRASENA O EMAIL INVALIDO - EXCEPCION POR CREAR
+            result = null;
+        }
+        return result;
     }
 }
