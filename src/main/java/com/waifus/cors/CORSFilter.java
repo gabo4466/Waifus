@@ -1,4 +1,4 @@
-package dev.waifus.cors;
+package com.waifus.cors;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
