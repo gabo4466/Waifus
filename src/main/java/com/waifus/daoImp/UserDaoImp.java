@@ -2,6 +2,7 @@ package com.waifus.daoImp;
 
 import com.waifus.DBConnection;
 import com.waifus.dao.GenericDao;
+import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 
 import java.sql.*;
@@ -44,7 +45,7 @@ public class UserDaoImp implements GenericDao<User> {
         return null;
     }
 
-    public User logIn (User userNotLogged) throws SQLException {
+    public User logIn (User userNotLogged) throws SQLException, UserException {
         User result;
         String query = "select id_user, email, banned, activated from waifus.users where email=? and password=?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -53,12 +54,12 @@ public class UserDaoImp implements GenericDao<User> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("banned"), rs.getBoolean("activated"));
-            System.out.println("El usuario existe, esto va funcionando");
             result = userExists;
             //  VALIDAR SI ESTA BANEADO O ACTIVADO
         }else{
             // CONTRASENA O EMAIL INVALIDO - EXCEPCION POR CREAR
             result = null;
+            throw new UserException("Correo o contraseña invalido");
         }
         return result;
     }

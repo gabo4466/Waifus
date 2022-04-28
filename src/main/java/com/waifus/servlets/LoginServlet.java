@@ -3,6 +3,7 @@ package com.waifus.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.waifus.daoImp.UserDaoImp;
+import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.ResponseService;
 
@@ -39,8 +40,12 @@ public class LoginServlet extends HttpServlet {
         try{
             UserDaoImp userDaoImp = new UserDaoImp();
             userDaoImp.logIn(user);
-        }catch (Exception e){
+        }catch (UserException e){
+            System.out.println(e.getMessage());
+        }catch (SQLException e){
             System.out.println("No se ha podido establecer conexion con la base de datos.");
+        }catch (Exception e){
+            System.out.println("Ha ocurrido algún error");
             System.out.println(e.getMessage());
         }
 
