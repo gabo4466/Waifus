@@ -28,20 +28,13 @@ public class LoginServlet extends HttpServlet {
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
-        /*
-        System.out.println("Email: "+user.getEmail());
-        System.out.println("HOla soy el post y te envio eljson");
-        user.setAdmin(true);
-        user.setBirthday(new Date(1999, Calendar.JUNE,4));
 
-        responseService.outputResponse(resp, responseService.toJson(user), 200);
-
-        System.out.println("HOla soy el post y ya te envie el json");*/
         try{
             UserDaoImp userDaoImp = new UserDaoImp();
-            userDaoImp.logIn(user);
+            User userLogged = userDaoImp.logIn(user);
         }catch (UserException e){
             System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (SQLException e){
             System.out.println("No se ha podido establecer conexion con la base de datos.");
         }catch (Exception e){

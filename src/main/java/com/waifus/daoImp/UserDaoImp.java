@@ -57,9 +57,8 @@ public class UserDaoImp implements GenericDao<User> {
             result = userExists;
             //  VALIDAR SI ESTA BANEADO O ACTIVADO
         }else{
-            // CONTRASENA O EMAIL INVALIDO - EXCEPCION POR CREAR
             result = null;
-            throw new UserException("Correo o contraseña invalido");
+            throw new UserException("Contraseña o correo inválido");
         }
         return result;
     }
