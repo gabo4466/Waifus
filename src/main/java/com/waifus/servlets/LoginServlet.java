@@ -1,10 +1,12 @@
 package com.waifus.servlets;
 
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
 import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.ResponseService;
+import com.waifus.services.SecurityService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,11 +26,11 @@ public class LoginServlet extends HttpServlet {
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
-
         try{
             UserDaoImp userDaoImp = new UserDaoImp();
             User userLogged = userDaoImp.logIn(user);
-            responseService.outputResponse(resp, responseService.toJson(userLogged), 200);
+            String jwt = SecurityService.createJWT(userLogged);
+            responseService.outputResponse(resp, jwt, 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
