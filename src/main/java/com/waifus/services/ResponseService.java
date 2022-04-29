@@ -66,6 +66,11 @@ public class ResponseService<G> {
         return result;
     }
 
+    /**
+     * Metodo que retorna un Json con formato string segun el error que reciba
+     * @param error
+     * @return Json en formato String
+     */
     public String errorResponse(String error){
         JsonObject json = new JsonObject();
         JsonPrimitive resp = new JsonPrimitive("ko");

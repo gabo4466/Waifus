@@ -1,7 +1,6 @@
 package com.waifus.servlets;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
@@ -12,10 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 
 public class LoginServlet extends HttpServlet {
     @Override
@@ -38,9 +34,11 @@ public class LoginServlet extends HttpServlet {
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (SQLException e){
             System.out.println("No se ha podido establecer conexion con la base de datos.");
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (Exception e){
             System.out.println("Ha ocurrido algún error");
             System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }
 
 
