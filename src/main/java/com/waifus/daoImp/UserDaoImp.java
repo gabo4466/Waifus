@@ -53,9 +53,38 @@ public class UserDaoImp implements GenericDao<User> {
         stmt.setString(2, userNotLogged.getPassword());
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
-            User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("banned"), rs.getBoolean("activated"));
-            result = userExists;
+            User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
+            System.out.println("CUENTA ACTIVADA: "+ userExists.isActivated());
+            System.out.println("CUENTA BANEADA: "+ userExists.isBanned());
+            System.out.println("CUENTA EMAIL: "+ userExists.getEmail());
+            System.out.println("CUENTA ID: "+ userExists.getIdUser());
+
+
             //  VALIDAR SI ESTA BANEADO O ACTIVADO
+            if (!userExists.isActivated()){
+                result = null;
+                throw new UserException("Cuenta desactivada");
+            }else if (userExists.isBanned()){
+                result = null;
+                throw new UserException("Cuenta baneada");
+            }else{
+                query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where email=?";
+                PreparedStatement stmt2 = this.connection.prepareStatement(query);
+                stmt2.setString(1, userExists.getEmail());
+                ResultSet rs2 = stmt2.executeQuery();
+                if (rs2.next()){
+                    result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
+                                    rs2.getBoolean("adult_content"), rs2.getString("nickname"),
+                                    rs2.getBoolean("admin"), rs2.getString("name"),
+                                    rs2.getString("email"), rs2.getDate("birthday"),
+                                    rs2.getString("profile_photo"), rs2.getString("country"),
+                                    rs2.getString("description"), rs2.getInt("karma"),
+                                    rs2.getString("theme"));
+                }else{
+                    result = null;
+                    throw new UserException("Contraseña o correo inválido");
+                }
+            }
         }else{
             result = null;
             throw new UserException("Contraseña o correo inválido");

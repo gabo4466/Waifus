@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
         try{
             UserDaoImp userDaoImp = new UserDaoImp();
             User userLogged = userDaoImp.logIn(user);
+            responseService.outputResponse(resp, responseService.toJson(userLogged), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);

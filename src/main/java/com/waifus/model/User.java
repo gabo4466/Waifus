@@ -41,6 +41,22 @@ public class User {
         this.banned = banned;
     }
 
+    public User(int idUser, String gender, boolean adult_content, String nickname, boolean admin, String name, String email, Date birthday, String profilePhoto, String country, String description, int karma, String theme) {
+        this.idUser = idUser;
+        this.gender = gender;
+        this.adult_content = adult_content;
+        this.nickname = nickname;
+        this.admin = admin;
+        this.name = name;
+        this.email = email;
+        this.birthday = birthday;
+        this.profilePhoto = profilePhoto;
+        this.country = country;
+        this.description = description;
+        this.karma = karma;
+        this.theme = theme;
+    }
+
     public int getIdUser() {
         return idUser;
     }
