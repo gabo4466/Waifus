@@ -2,6 +2,8 @@ package com.waifus.servlets;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
@@ -30,7 +32,9 @@ public class LoginServlet extends HttpServlet {
             UserDaoImp userDaoImp = new UserDaoImp();
             User userLogged = userDaoImp.logIn(user);
             String jwt = SecurityService.createJWT(userLogged);
-            responseService.outputResponse(resp, jwt, 200);
+            JsonObject json = new JsonObject();
+            json.add("jwt",new JsonPrimitive(jwt));
+            responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
