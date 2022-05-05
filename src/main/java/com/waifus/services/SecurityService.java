@@ -35,7 +35,7 @@ public class SecurityService {
 
     public static DecodedJWT verifyJWT(String token) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer("auth0")
+                .withIssuer("gjm")
                 .build();
         return verifier.verify(token);
     }
