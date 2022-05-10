@@ -1,6 +1,8 @@
 package com.waifus.services;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -62,5 +64,19 @@ public class ResponseService<G> {
             result = "";
         }
         return result;
+    }
+
+    /**
+     * Metodo que retorna un Json con formato string segun el error que reciba
+     * @param error
+     * @return Json en formato String
+     */
+    public String errorResponse(String error){
+        JsonObject json = new JsonObject();
+        JsonPrimitive resp = new JsonPrimitive("ko");
+        JsonPrimitive message = new JsonPrimitive(error);
+        json.add("res", resp);
+        json.add("message", message);
+        return json.toString();
     }
 }

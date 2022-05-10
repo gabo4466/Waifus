@@ -1,4 +1,4 @@
-package com.waifus;
+package com.waifus.services;
 
 import java.sql.*;
 
