@@ -10,9 +10,17 @@ import java.util.ArrayList;
 
 public class UserDaoImp implements GenericDao<User> {
     private Connection connection;
+    public static UserDaoImp instance = null;
 
-    public UserDaoImp() throws SQLException, ClassNotFoundException {
+    private UserDaoImp() throws SQLException, ClassNotFoundException {
         this.connection = DBConnection.getConnection();
+    }
+
+    public static UserDaoImp getInstance() throws SQLException, ClassNotFoundException{
+        if (instance == null){
+            instance = new UserDaoImp();
+        }
+        return instance;
     }
 
     @Override
