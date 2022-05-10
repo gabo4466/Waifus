@@ -1,6 +1,6 @@
 package com.waifus.daoImp;
 
-import com.waifus.DBConnection;
+import com.waifus.services.DBConnection;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
