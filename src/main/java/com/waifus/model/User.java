@@ -57,6 +57,13 @@ public class User {
         this.theme = theme;
     }
 
+    public User(String nickname, String name, String email, String password) {
+        this.nickname = nickname;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
     public int getIdUser() {
         return idUser;
     }
