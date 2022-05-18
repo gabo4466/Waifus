@@ -198,4 +198,8 @@ public class User {
         return UserDaoImp.getInstance().logIn(this);
     }
 
+    public Boolean register() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().add(this);
+    }
+
 }

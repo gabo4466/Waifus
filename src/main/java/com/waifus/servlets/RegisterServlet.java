@@ -28,8 +28,7 @@ public class RegisterServlet extends HttpServlet {
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
         try{
-            UserDaoImp userDaoImp = new UserDaoImp();
-            boolean registered = userDaoImp.add(user);
+            boolean registered = user.register();
             JsonObject json = new JsonObject();
             if (registered){
                 json.add("registered", new JsonPrimitive("ok"));
