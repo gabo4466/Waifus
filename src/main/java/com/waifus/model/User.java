@@ -13,7 +13,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private Date birthday;
+    private String birthday;
     private String profilePhoto;
     private String country;
     private String description;
@@ -41,7 +41,7 @@ public class User {
         this.banned = banned;
     }
 
-    public User(int idUser, String gender, boolean adult_content, String nickname, boolean admin, String name, String email, Date birthday, String profilePhoto, String country, String description, int karma, String theme) {
+    public User(int idUser, String gender, boolean adult_content, String nickname, boolean admin, String name, String email, String birthday, String profilePhoto, String country, String description, int karma, String theme) {
         this.idUser = idUser;
         this.gender = gender;
         this.adult_content = adult_content;
@@ -128,11 +128,11 @@ public class User {
         this.password = password;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

@@ -26,8 +26,34 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public boolean add(User obj) {
-        return false;
+    public boolean add(User user) throws SQLException, UserException{
+        boolean result;
+        String query = "select id_user from waifus.users where email=? or nickname=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getEmail());
+        stmt.setString(2, user.getNickname());
+        ResultSet rs = stmt.executeQuery();
+        if (!rs.next()){
+            query = "insert into waifus.users (email, nickname, name, password, birthday, adult_content, admin, activated, banned, karma) values (?,?,?,?,?,?,0,0,0,0);";
+            PreparedStatement stmt2 = this.connection.prepareStatement(query);
+            stmt2.setString(1, user.getEmail());
+            stmt2.setString(2, user.getNickname());
+            stmt2.setString(3, user.getName());
+            stmt2.setString(4, user.getPassword());
+            stmt2.setString(5, user.getBirthday());
+            stmt2.setBoolean(6, user.isAdult_content());
+            int rs2 = stmt2.executeUpdate();
+            if (rs2>0){
+                result = true;
+            }else {
+                result = false;
+                throw new UserException("Nombre de usuario o email inválidos");
+            }
+        }else {
+            result = false;
+            throw new UserException("Nombre de usuario o email inválidos");
+        }
+        return result;
     }
 
     @Override
@@ -76,7 +102,7 @@ public class UserDaoImp implements GenericDao<User> {
                     result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
                                     rs2.getBoolean("adult_content"), rs2.getString("nickname"),
                                     rs2.getBoolean("admin"), rs2.getString("name"),
-                                    rs2.getString("email"), rs2.getDate("birthday"),
+                                    rs2.getString("email"), rs2.getString("birthday"),
                                     rs2.getString("profile_photo"), rs2.getString("country"),
                                     rs2.getString("description"), rs2.getInt("karma"),
                                     rs2.getString("theme"));
