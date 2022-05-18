@@ -1,7 +1,9 @@
 package com.waifus.model;
 
-import com.google.gson.Gson;
+import com.waifus.daoImp.UserDaoImp;
+import com.waifus.exceptions.UserException;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 public class User {
@@ -190,6 +192,10 @@ public class User {
 
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    public User logIn() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().logIn(this);
     }
 
 }
