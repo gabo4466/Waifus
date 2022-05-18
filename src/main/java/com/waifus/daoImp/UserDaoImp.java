@@ -70,13 +70,7 @@ public class UserDaoImp implements GenericDao<User> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
-            System.out.println("CUENTA ACTIVADA: "+ userExists.isActivated());
-            System.out.println("CUENTA BANEADA: "+ userExists.isBanned());
-            System.out.println("CUENTA EMAIL: "+ userExists.getEmail());
-            System.out.println("CUENTA ID: "+ userExists.getIdUser());
-
-
-            //  VALIDAR SI ESTA BANEADO O ACTIVADO
+            
             if (!userExists.isActivated()){
                 result = null;
                 throw new UserException("Cuenta desactivada");
