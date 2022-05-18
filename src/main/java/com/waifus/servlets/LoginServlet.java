@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
+        System.out.println("CONTRASENA: "+ user.getPassword());
         user.setPassword(responseService.toHash(user.getPassword()));
         try{
             User userLogged = user.logIn();
