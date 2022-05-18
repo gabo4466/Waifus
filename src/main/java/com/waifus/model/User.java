@@ -4,12 +4,11 @@ import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 public class User {
     private int idUser;
     private String gender;
-    private boolean adult_content;
+    private boolean adultContent;
     private String nickname;
     private boolean admin;
     private String name;
@@ -43,10 +42,10 @@ public class User {
         this.banned = banned;
     }
 
-    public User(int idUser, String gender, boolean adult_content, String nickname, boolean admin, String name, String email, String birthday, String profilePhoto, String country, String description, int karma, String theme) {
+    public User(int idUser, String gender, boolean adultContent, String nickname, boolean admin, String name, String email, String birthday, String profilePhoto, String country, String description, int karma, String theme) {
         this.idUser = idUser;
         this.gender = gender;
-        this.adult_content = adult_content;
+        this.adultContent = adultContent;
         this.nickname = nickname;
         this.admin = admin;
         this.name = name;
@@ -82,12 +81,12 @@ public class User {
         this.gender = gender;
     }
 
-    public boolean isAdult_content() {
-        return adult_content;
+    public boolean isAdultContent() {
+        return adultContent;
     }
 
-    public void setAdult_content(boolean adult_content) {
-        this.adult_content = adult_content;
+    public void setAdultContent(boolean adultContent) {
+        this.adultContent = adultContent;
     }
 
     public String getNickname() {

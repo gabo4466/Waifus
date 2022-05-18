@@ -49,7 +49,7 @@ public class UserDaoImp implements GenericDao<User> {
             stmt2.setString(3, user.getName());
             stmt2.setString(4, user.getPassword());
             stmt2.setString(5, user.getBirthday());
-            stmt2.setBoolean(6, user.isAdult_content());
+            stmt2.setBoolean(6, user.isAdultContent());
             int rs2 = stmt2.executeUpdate();
             if (rs2>0){
                 result = true;
