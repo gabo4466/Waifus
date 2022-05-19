@@ -224,6 +224,13 @@ public class User {
         return UserDaoImp.getInstance().logIn(this);
     }
 
+    /**
+     * 
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws UserException
+     */
     public Boolean register() throws SQLException, ClassNotFoundException, UserException {
         return UserDaoImp.getInstance().add(this);
     }

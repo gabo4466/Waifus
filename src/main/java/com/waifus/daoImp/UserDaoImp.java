@@ -33,6 +33,14 @@ public class UserDaoImp implements GenericDao<User> {
         return false;
     }
 
+    /**
+     * Método que comprueba si el nombre de usuario o email introducidos en el registro son existentes o no, en caso afirmativo lanza excepciones,
+     * en caso negativo lanza una query de inserción a la base de datos
+     * @param user Usuario con los datos ingresados en el formulario de registro o null
+     * @return booleano en referencia a si funciono el registro
+     * @throws SQLException en caso de un error de base de datos
+     * @throws UserException en caso de un error con relacion al usuario
+     */
     @Override
     public boolean add(User user) throws SQLException, UserException{
         boolean result;
