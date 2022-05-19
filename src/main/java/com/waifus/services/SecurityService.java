@@ -17,18 +17,11 @@ public class SecurityService {
     public static String createJWT(User user) throws JWTCreationException {
         return JWT.create()
                 .withClaim("idUser", user.getIdUser())
-                .withClaim("gender", user.getGender())
                 .withClaim("adult_content", user.isAdult_content())
                 .withClaim("nickname", user.getNickname())
                 .withClaim("admin", user.isAdmin())
                 .withClaim("name", user.getName())
                 .withClaim("email", user.getEmail())
-                .withClaim("birthday", user.getBirthday())
-                .withClaim("profilePhoto", user.getProfilePhoto())
-                .withClaim("country", user.getCountry())
-                .withClaim("description", user.getDescription())
-                .withClaim("karma", user.getKarma())
-                .withClaim("theme", user.getTheme())
                 .withIssuer("gjm")
                 .sign(algorithm);
     }

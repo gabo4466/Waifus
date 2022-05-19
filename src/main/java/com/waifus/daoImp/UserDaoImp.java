@@ -10,9 +10,17 @@ import java.util.ArrayList;
 
 public class UserDaoImp implements GenericDao<User> {
     private Connection connection;
+    public static UserDaoImp instance = null;
 
-    public UserDaoImp() throws SQLException, ClassNotFoundException {
+    private UserDaoImp() throws SQLException, ClassNotFoundException {
         this.connection = DBConnection.getConnection();
+    }
+
+    public static UserDaoImp getInstance() throws SQLException, ClassNotFoundException{
+        if (instance == null){
+            instance = new UserDaoImp();
+        }
+        return instance;
     }
 
     @Override
@@ -45,6 +53,14 @@ public class UserDaoImp implements GenericDao<User> {
         return null;
     }
 
+    /**
+     * Método que comprueba que el usuario exista en la base de datos y que los datos ingresados sean correctos, en caso de que todo sea correcto retorna el
+     * usuario con todos los valores de la base de datos, por el contrario retorna null y lanza las excepciones correspondientes segun el error.
+     * @param userNotLogged Usuario con los datos ingresados en el formulario de login o null
+     * @return Usuario con los datos de la base de datos
+     * @throws SQLException en caso de un error de base de datos
+     * @throws UserException en caso de un error con relacion al usuario
+     */
     public User logIn (User userNotLogged) throws SQLException, UserException {
         User result;
         String query = "select id_user, email, banned, activated from waifus.users where email=? and password=?";
@@ -54,13 +70,7 @@ public class UserDaoImp implements GenericDao<User> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
-            System.out.println("CUENTA ACTIVADA: "+ userExists.isActivated());
-            System.out.println("CUENTA BANEADA: "+ userExists.isBanned());
-            System.out.println("CUENTA EMAIL: "+ userExists.getEmail());
-            System.out.println("CUENTA ID: "+ userExists.getIdUser());
 
-
-            //  VALIDAR SI ESTA BANEADO O ACTIVADO
             if (!userExists.isActivated()){
                 result = null;
                 throw new UserException("Cuenta desactivada");

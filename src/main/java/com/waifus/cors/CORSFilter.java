@@ -49,10 +49,12 @@ public class CORSFilter implements Filter {
         if (request.getMethod().equals("OPTIONS")) {
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             return;
+        }else{
+            chain.doFilter(request, servletResponse);
+
         }
 
         // pass the request along the filter chain
-        chain.doFilter(request, servletResponse);
     }
 
     /**

@@ -17,6 +17,8 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //
+        String jwt = req.getHeader("Authorization");
+        System.out.println(jwt);
     }
 
     private void outputResponse(HttpServletResponse response,String payload, int status){
