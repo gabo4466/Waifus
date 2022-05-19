@@ -4,19 +4,23 @@ import com.waifus.services.DBConnection;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
+import com.waifus.services.PropertiesService;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class UserDaoImp implements GenericDao<User> {
     private Connection connection;
     public static UserDaoImp instance = null;
+    public static Properties prop;
 
     private UserDaoImp() throws SQLException, ClassNotFoundException {
         this.connection = DBConnection.getConnection();
+        prop = PropertiesService.getProperties("config_es");
     }
 
-    public static UserDaoImp getInstance() throws SQLException, ClassNotFoundException{
+    public static UserDaoImp getInstance() throws SQLException, ClassNotFoundException {
         if (instance == null){
             instance = new UserDaoImp();
         }
@@ -88,7 +92,7 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     /**
-     * Metodo que comprueba que el usuario exista en la base de datos y que los datos ingresados sean correctos, en caso de que todo sea correcto retorna el
+     * Método que comprueba que el usuario exista en la base de datos y que los datos ingresados sean correctos, en caso de que todo sea correcto retorna el
      * usuario con todos los valores de la base de datos, por el contrario retorna null y lanza las excepciones correspondientes segun el error.
      * @param userNotLogged Usuario con los datos ingresados en el formulario de login o null
      * @return Usuario con los datos de la base de datos
@@ -104,13 +108,7 @@ public class UserDaoImp implements GenericDao<User> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
-            System.out.println("CUENTA ACTIVADA: "+ userExists.isActivated());
-            System.out.println("CUENTA BANEADA: "+ userExists.isBanned());
-            System.out.println("CUENTA EMAIL: "+ userExists.getEmail());
-            System.out.println("CUENTA ID: "+ userExists.getIdUser());
 
-
-            //  VALIDAR SI ESTA BANEADO O ACTIVADO
             if (!userExists.isActivated()){
                 result = null;
                 throw new UserException("Cuenta desactivada");
@@ -132,12 +130,12 @@ public class UserDaoImp implements GenericDao<User> {
                                     rs2.getString("theme"));
                 }else{
                     result = null;
-                    throw new UserException("Contraseña o correo inválido");
+                    throw new UserException(prop.getProperty("resp.invalidUser"));
                 }
             }
         }else{
             result = null;
-            throw new UserException("Contraseña o correo inválido");
+            throw new UserException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }

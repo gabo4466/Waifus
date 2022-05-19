@@ -38,9 +38,10 @@ public class CORSFilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         System.out.println("CORSFilter HTTP Request: " + request.getMethod());
+
         // Authorize (allow) all domains to consume the content
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "*");
-        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, POST, OPTIONS, HEAD, PUT");
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
 
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
@@ -48,10 +49,12 @@ public class CORSFilter implements Filter {
         if (request.getMethod().equals("OPTIONS")) {
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             return;
+        }else{
+            chain.doFilter(request, servletResponse);
+
         }
 
         // pass the request along the filter chain
-        chain.doFilter(request, servletResponse);
     }
 
     /**

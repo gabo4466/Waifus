@@ -1,11 +1,11 @@
 package com.waifus.servlets;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
+import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 import com.waifus.services.SecurityService;
 
@@ -15,10 +15,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class LoginServlet extends HttpServlet {
+
+    private Properties prop;
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void init() throws ServletException {
+        super.init();
+        // AQUI SE HARIA EL CAMBIO DE IDIOMA
+        this.prop = PropertiesService.getProperties("config_es");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         // mucho texto
         ResponseService<User> responseService = new ResponseService<User>();
         responseService.outputResponse(resp, "{\"prueba\":\"Good\"}", 200);
@@ -37,14 +48,15 @@ public class LoginServlet extends HttpServlet {
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){
-            System.out.println("No se ha podido establecer conexion con la base de datos.");
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
-        }catch (Exception e){
-            System.out.println("Ha ocurrido algún error");
+            System.out.println(prop.getProperty("db.failed"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+        }catch (Exception e){
+            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
         }
 
 
