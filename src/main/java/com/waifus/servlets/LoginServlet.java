@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -30,7 +29,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         // mucho texto
         ResponseService<User> responseService = new ResponseService<User>();
         responseService.outputResponse(resp, "{\"prueba\":\"Good\"}", 200);
@@ -55,9 +54,9 @@ public class LoginServlet extends HttpServlet {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
         }catch (Exception e){
-            System.out.println("Ha ocurrido algún error");
+            System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse("Ha ocurrido algún error"), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
         }
 
 
