@@ -3,6 +3,8 @@ package com.waifus.model;
 import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -187,7 +189,7 @@ public class User {
         this.banned = banned;
     }
 
-    public User logIn() throws SQLException, ClassNotFoundException, UserException {
+    public User logIn() throws SQLException, ClassNotFoundException, UserException, IOException {
         return UserDaoImp.getInstance().logIn(this);
     }
 
