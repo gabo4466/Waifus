@@ -47,7 +47,5 @@ public class RegisterServlet extends HttpServlet {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }
-
-
     }
 }

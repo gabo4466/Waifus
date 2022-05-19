@@ -22,8 +22,7 @@ public class User {
     private String theme;
     private boolean activated;
     private boolean banned;
-
-
+    private String repPass;
 
     /**
      * Constructor que se utiliza para el login
@@ -56,6 +55,26 @@ public class User {
         this.description = description;
         this.karma = karma;
         this.theme = theme;
+    }
+
+    public User(int idUser, String gender, boolean adultContent, String nickname, boolean admin, String name, String email, String password, String birthday, String profilePhoto, String country, String description, int karma, String theme, boolean activated, boolean banned, String repPass) {
+        this.idUser = idUser;
+        this.gender = gender;
+        this.adultContent = adultContent;
+        this.nickname = nickname;
+        this.admin = admin;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birthday = birthday;
+        this.profilePhoto = profilePhoto;
+        this.country = country;
+        this.description = description;
+        this.karma = karma;
+        this.theme = theme;
+        this.activated = activated;
+        this.banned = banned;
+        this.repPass = repPass;
     }
 
     public User(String nickname, String name, String email, String password) {
@@ -191,6 +210,14 @@ public class User {
 
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    public String getRepPass() {
+        return repPass;
+    }
+
+    public void setRepPass(String repPass) {
+        this.repPass = repPass;
     }
 
     public User logIn() throws SQLException, ClassNotFoundException, UserException {
