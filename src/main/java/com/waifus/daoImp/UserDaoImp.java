@@ -54,7 +54,7 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     /**
-     * Metodo que comprueba que el usuario exista en la base de datos y que los datos ingresados sean correctos, en caso de que todo sea correcto retorna el
+     * Método que comprueba que el usuario exista en la base de datos y que los datos ingresados sean correctos, en caso de que todo sea correcto retorna el
      * usuario con todos los valores de la base de datos, por el contrario retorna null y lanza las excepciones correspondientes segun el error.
      * @param userNotLogged Usuario con los datos ingresados en el formulario de login o null
      * @return Usuario con los datos de la base de datos
