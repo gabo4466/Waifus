@@ -1,6 +1,5 @@
 package com.waifus.servlets;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -28,7 +27,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
-        System.out.println("CONTRASENA: "+ user.getPassword());
         user.setPassword(responseService.toHash(user.getPassword()));
         try{
             User userLogged = user.logIn();
@@ -38,14 +36,15 @@ public class LoginServlet extends HttpServlet {
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){
             System.out.println("No se ha podido establecer conexion con la base de datos.");
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse("Ha ocurrido algún error"), 400);
         }catch (Exception e){
             System.out.println("Ha ocurrido algún error");
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse("Ha ocurrido algún error"), 400);
         }
 
 
