@@ -4,19 +4,23 @@ import com.waifus.services.DBConnection;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
+import com.waifus.services.PropertiesService;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class UserDaoImp implements GenericDao<User> {
     private Connection connection;
     public static UserDaoImp instance = null;
+    public static Properties prop;
 
     private UserDaoImp() throws SQLException, ClassNotFoundException {
         this.connection = DBConnection.getConnection();
+        prop = PropertiesService.getProperties("config_es");
     }
 
-    public static UserDaoImp getInstance() throws SQLException, ClassNotFoundException{
+    public static UserDaoImp getInstance() throws SQLException, ClassNotFoundException {
         if (instance == null){
             instance = new UserDaoImp();
         }
@@ -106,12 +110,12 @@ public class UserDaoImp implements GenericDao<User> {
                                     rs2.getString("theme"));
                 }else{
                     result = null;
-                    throw new UserException("Contraseña o correo inválido");
+                    throw new UserException(prop.getProperty("resp.invalidUser"));
                 }
             }
         }else{
             result = null;
-            throw new UserException("Contraseña o correo inválido");
+            throw new UserException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }
