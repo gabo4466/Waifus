@@ -1,10 +1,8 @@
 package com.waifus.servlets;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.ResponseService;
@@ -21,6 +19,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // mucho texto
+        ResponseService<User> responseService = new ResponseService<User>();
+        responseService.outputResponse(resp, "{\"prueba\":\"Good\"}", 200);
     }
 
     @Override
@@ -29,22 +29,22 @@ public class LoginServlet extends HttpServlet {
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
         try{
-            UserDaoImp userDaoImp = new UserDaoImp();
-            User userLogged = userDaoImp.logIn(user);
+            User userLogged = user.logIn();
             String jwt = SecurityService.createJWT(userLogged);
             JsonObject json = new JsonObject();
-            json.add("jwt",new JsonPrimitive(jwt));
+            json.add("access",new JsonPrimitive(jwt));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){
             System.out.println("No se ha podido establecer conexion con la base de datos.");
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse("Ha ocurrido algún error"), 400);
         }catch (Exception e){
             System.out.println("Ha ocurrido algún error");
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse("Ha ocurrido algún error"), 400);
         }
 
 
