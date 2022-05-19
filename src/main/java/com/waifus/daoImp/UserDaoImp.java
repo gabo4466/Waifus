@@ -51,7 +51,7 @@ public class UserDaoImp implements GenericDao<User> {
     @Override
     public User get(int id) throws SQLException {
         User result=null;
-        String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where email=?";
+        String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where id_user=?";
         PreparedStatement stmt2 = this.connection.prepareStatement(query);
         stmt2.setInt(1, id);
         ResultSet rs2 = stmt2.executeQuery();
