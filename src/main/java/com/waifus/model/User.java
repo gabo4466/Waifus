@@ -220,12 +220,19 @@ public class User {
         this.repPass = repPass;
     }
 
+    /**
+     * @see com.waifus.daoImp.UserDaoImp#logIn(User) 
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws UserException
+     */
     public User logIn() throws SQLException, ClassNotFoundException, UserException {
         return UserDaoImp.getInstance().logIn(this);
     }
 
     /**
-     * 
+     * @see com.waifus.daoImp.UserDaoImp#add(User) 
      * @return
      * @throws SQLException
      * @throws ClassNotFoundException

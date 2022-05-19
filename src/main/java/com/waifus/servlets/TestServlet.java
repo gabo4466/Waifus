@@ -1,5 +1,7 @@
 package com.waifus.servlets;
 
+import com.waifus.services.EmailService;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,12 @@ import java.io.OutputStream;
 public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //
+        EmailService emailService = new EmailService();
+        try {
+            emailService.sendMail("prueba", "costanzag1999@gmail.com","Email prueba");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
     }
 
