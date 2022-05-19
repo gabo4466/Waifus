@@ -1,6 +1,7 @@
 package com.waifus.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -39,7 +40,7 @@ public class ResponseService<G> {
      * @return Un string que contiene el Json del objeto
      */
     public String toJson(G obj) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyyMMdd").create();
         return gson.toJson(obj);
     }
 
