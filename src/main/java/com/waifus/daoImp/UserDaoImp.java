@@ -41,8 +41,22 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public User get(int id) {
-        return null;
+    public User get(int id) throws SQLException {
+        User result=null;
+        String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where email=?";
+        PreparedStatement stmt2 = this.connection.prepareStatement(query);
+        stmt2.setInt(1, id);
+        ResultSet rs2 = stmt2.executeQuery();
+        if (rs2.next()){
+            result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
+                    rs2.getBoolean("adult_content"), rs2.getString("nickname"),
+                    rs2.getBoolean("admin"), rs2.getString("name"),
+                    rs2.getString("email"), rs2.getDate("birthday"),
+                    rs2.getString("profile_photo"), rs2.getString("country"),
+                    rs2.getString("description"), rs2.getInt("karma"),
+                    rs2.getString("theme"));
+        }
+        return result;
     }
 
     public User logIn (User userNotLogged) throws SQLException, UserException {
