@@ -37,9 +37,52 @@ public class UserDaoImp implements GenericDao<User> {
         return false;
     }
 
+    /**
+     * Método que comprueba si el nombre de usuario o email introducidos en el registro son existentes o no, en caso afirmativo lanza excepciones,
+     * en caso negativo lanza una query de inserción a la base de datos
+     * @param user Usuario con los datos ingresados en el formulario de registro o null
+     * @return booleano en referencia a si funciono el registro
+     * @throws SQLException en caso de un error de base de datos
+     * @throws UserException en caso de un error con relacion al usuario
+     */
     @Override
-    public boolean add(User obj) {
-        return false;
+    public User add(User user) throws SQLException, UserException{
+        User result;
+        String query = "select id_user from waifus.users where email=? or nickname=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getEmail());
+        stmt.setString(2, user.getNickname());
+        ResultSet rs = stmt.executeQuery();
+        if (!rs.next()){
+            query = "insert into waifus.users (email, nickname, name, password, birthday, adult_content, admin, activated, banned, karma) values (?,?,?,?,?,?,0,0,0,0);";
+            PreparedStatement stmt2 = this.connection.prepareStatement(query);
+            stmt2.setString(1, user.getEmail());
+            stmt2.setString(2, user.getNickname());
+            stmt2.setString(3, user.getName());
+            stmt2.setString(4, user.getPassword());
+            stmt2.setString(5, user.getBirthday());
+            stmt2.setBoolean(6, user.isAdultContent());
+            int rs2 = stmt2.executeUpdate();
+            if (rs2>0){
+                query = "select id_user from waifus.users where email=?";
+                stmt = this.connection.prepareStatement(query);
+                stmt.setString(1, user.getEmail());
+                rs = stmt.executeQuery();
+                if (rs.next()){
+                    result = this.get(rs.getInt("id_user"));
+                }else {
+                    result = null;
+                    throw new UserException(prop.getProperty("resp.invalidUser"));
+                }
+            }else {
+                result = null;
+                throw new UserException(prop.getProperty("resp.invalidUser"));
+            }
+        }else {
+            result = null;
+            throw new UserException(prop.getProperty("resp.invalidUser"));
+        }
+        return result;
     }
 
     @Override
@@ -53,7 +96,7 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public User get(int id) throws SQLException {
+    public User get(int id) throws SQLException, UserException {
         User result=null;
         String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where id_user=?";
         PreparedStatement stmt2 = this.connection.prepareStatement(query);
@@ -63,10 +106,13 @@ public class UserDaoImp implements GenericDao<User> {
             result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
                     rs2.getBoolean("adult_content"), rs2.getString("nickname"),
                     rs2.getBoolean("admin"), rs2.getString("name"),
-                    rs2.getString("email"), rs2.getDate("birthday"),
+                    rs2.getString("email"), rs2.getString("birthday"),
                     rs2.getString("profile_photo"), rs2.getString("country"),
                     rs2.getString("description"), rs2.getInt("karma"),
                     rs2.getString("theme"));
+        }else{
+            result = null;
+            throw new UserException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }
@@ -96,22 +142,7 @@ public class UserDaoImp implements GenericDao<User> {
                 result = null;
                 throw new UserException("Cuenta baneada");
             }else{
-                query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where email=?";
-                PreparedStatement stmt2 = this.connection.prepareStatement(query);
-                stmt2.setString(1, userExists.getEmail());
-                ResultSet rs2 = stmt2.executeQuery();
-                if (rs2.next()){
-                    result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
-                                    rs2.getBoolean("adult_content"), rs2.getString("nickname"),
-                                    rs2.getBoolean("admin"), rs2.getString("name"),
-                                    rs2.getString("email"), rs2.getDate("birthday"),
-                                    rs2.getString("profile_photo"), rs2.getString("country"),
-                                    rs2.getString("description"), rs2.getInt("karma"),
-                                    rs2.getString("theme"));
-                }else{
-                    result = null;
-                    throw new UserException(prop.getProperty("resp.invalidUser"));
-                }
+                result = this.get(userExists.getIdUser());
             }
         }else{
             result = null;

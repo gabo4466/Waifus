@@ -5,10 +5,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
+import com.waifus.services.EmailService;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 import com.waifus.services.SecurityService;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class LoginServlet extends HttpServlet {
+public class ActivationCodeServlet extends HttpServlet {
 
     private Properties prop;
 
@@ -30,35 +32,27 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        // mucho texto
         ResponseService<User> responseService = new ResponseService<User>();
-        responseService.outputResponse(resp, "{\"prueba\":\"Good\"}", 200);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResponseService<User> responseService = new ResponseService<User>();
-        User user = new Gson().fromJson(req.getReader(), User.class);
-        user.setPassword(responseService.toHash(user.getPassword()));
-        try{
-            User userLogged = user.logIn();
-            String jwt = SecurityService.createJWT(userLogged);
+        EmailService email = new EmailService();
+        try {
+            int code = email.activationCode();
+            email.sendMail(email.activationCodeHtml(code, req.getParameter("nickname"), req.getParameter("email")), req.getParameter("email"), email.activationCodeSubject(code));
             JsonObject json = new JsonObject();
-            json.add("access",new JsonPrimitive(jwt));
+            json.add("activationCode",new JsonPrimitive(code));
             responseService.outputResponse(resp, json.toString(), 200);
-        }catch (UserException e){
+        }catch (MessagingException e){
+            System.out.println(prop.getProperty("msg.error"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
-        }catch (SQLException e){
-            System.out.println(prop.getProperty("db.failed"));
-            System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("msg.error")), 400);
         }catch (Exception e){
             System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
         }
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 }

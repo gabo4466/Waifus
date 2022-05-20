@@ -6,18 +6,17 @@ import com.waifus.exceptions.UserException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 
 public class User {
     private int idUser;
     private String gender;
-    private boolean adult_content;
+    private boolean adultContent;
     private String nickname;
     private boolean admin;
     private String name;
     private String email;
     private String password;
-    private Date birthday;
+    private String birthday;
     private String profilePhoto;
     private String country;
     private String description;
@@ -25,8 +24,7 @@ public class User {
     private String theme;
     private boolean activated;
     private boolean banned;
-
-
+    private String repPass;
 
     /**
      * Constructor que se utiliza para el login
@@ -45,10 +43,10 @@ public class User {
         this.banned = banned;
     }
 
-    public User(int idUser, String gender, boolean adult_content, String nickname, boolean admin, String name, String email, Date birthday, String profilePhoto, String country, String description, int karma, String theme) {
+    public User(int idUser, String gender, boolean adultContent, String nickname, boolean admin, String name, String email, String birthday, String profilePhoto, String country, String description, int karma, String theme) {
         this.idUser = idUser;
         this.gender = gender;
-        this.adult_content = adult_content;
+        this.adultContent = adultContent;
         this.nickname = nickname;
         this.admin = admin;
         this.name = name;
@@ -59,6 +57,33 @@ public class User {
         this.description = description;
         this.karma = karma;
         this.theme = theme;
+    }
+
+    public User(int idUser, String gender, boolean adultContent, String nickname, boolean admin, String name, String email, String password, String birthday, String profilePhoto, String country, String description, int karma, String theme, boolean activated, boolean banned, String repPass) {
+        this.idUser = idUser;
+        this.gender = gender;
+        this.adultContent = adultContent;
+        this.nickname = nickname;
+        this.admin = admin;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birthday = birthday;
+        this.profilePhoto = profilePhoto;
+        this.country = country;
+        this.description = description;
+        this.karma = karma;
+        this.theme = theme;
+        this.activated = activated;
+        this.banned = banned;
+        this.repPass = repPass;
+    }
+
+    public User(String nickname, String name, String email, String password) {
+        this.nickname = nickname;
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
     public User(int idUser) {
@@ -81,12 +106,12 @@ public class User {
         this.gender = gender;
     }
 
-    public boolean isAdult_content() {
-        return adult_content;
+    public boolean isAdultContent() {
+        return adultContent;
     }
 
-    public void setAdult_content(boolean adult_content) {
-        this.adult_content = adult_content;
+    public void setAdultContent(boolean adultContent) {
+        this.adultContent = adultContent;
     }
 
     public String getNickname() {
@@ -129,11 +154,11 @@ public class User {
         this.password = password;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -193,11 +218,39 @@ public class User {
         this.banned = banned;
     }
 
+    public String getRepPass() {
+        return repPass;
+    }
+
+    public void setRepPass(String repPass) {
+        this.repPass = repPass;
+    }
+
+    /**
+     * @see com.waifus.daoImp.UserDaoImp#logIn(User) 
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws UserException
+     * @throws IOException
+     */
     public User logIn() throws SQLException, ClassNotFoundException, UserException, IOException {
         return UserDaoImp.getInstance().logIn(this);
     }
 
-    public User get() throws SQLException, ClassNotFoundException {
+    /**
+     * @see com.waifus.daoImp.UserDaoImp#add(User) 
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws UserException
+     * @throws IOException
+     */
+    public User register() throws SQLException, ClassNotFoundException, UserException, IOException {
+        return UserDaoImp.getInstance().add(this);
+    }
+
+    public User get() throws SQLException, ClassNotFoundException, UserException {
         return UserDaoImp.getInstance().get(this.idUser);
     }
 }

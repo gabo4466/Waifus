@@ -20,7 +20,7 @@ public class SecurityService {
     public static String createJWT(User user) throws JWTCreationException {
         return JWT.create()
                 .withClaim("idUser", user.getIdUser())
-                .withClaim("adult_content", user.isAdult_content())
+                .withClaim("adult_content", user.isAdultContent())
                 .withClaim("nickname", user.getNickname())
                 .withClaim("admin", user.isAdmin())
                 .withClaim("name", user.getName())
