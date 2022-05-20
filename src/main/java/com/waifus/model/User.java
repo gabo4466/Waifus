@@ -228,6 +228,7 @@ public class User {
      * @throws SQLException
      * @throws ClassNotFoundException
      * @throws UserException
+     * @throws IOException
      */
     public User logIn() throws SQLException, ClassNotFoundException, UserException, IOException {
         return UserDaoImp.getInstance().logIn(this);
@@ -239,8 +240,9 @@ public class User {
      * @throws SQLException
      * @throws ClassNotFoundException
      * @throws UserException
+     * @throws IOException
      */
-    public Boolean register() throws SQLException, ClassNotFoundException, UserException {
+    public Boolean register() throws SQLException, ClassNotFoundException, UserException, IOException {
         return UserDaoImp.getInstance().add(this);
     }
 

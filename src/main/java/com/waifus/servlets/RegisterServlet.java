@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
+import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 import com.waifus.services.SecurityService;
 
@@ -15,8 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class RegisterServlet extends HttpServlet {
+    private Properties prop;
+
+    public void init() throws ServletException {
+        super.init();
+        // AQUI SE HARIA EL CAMBIO DE IDIOMA
+        this.prop = PropertiesService.getProperties("config_es");
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // mucho texto
@@ -40,10 +50,10 @@ public class RegisterServlet extends HttpServlet {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (SQLException e){
-            System.out.println("No se ha podido establecer conexion con la base de datos.");
+            System.out.println(prop.getProperty("db.failed"));
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (Exception e){
-            System.out.println("Ha ocurrido algún error");
+            System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }

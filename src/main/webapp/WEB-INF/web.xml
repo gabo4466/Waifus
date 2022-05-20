@@ -28,6 +28,14 @@
     <servlet-name>register</servlet-name>
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>activationCode</servlet-name>
+    <servlet-class>com.waifus.servlets.ActivationCodeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>activationCode</servlet-name>
+    <url-pattern>/activationCode</url-pattern>
+  </servlet-mapping>
 
 
   <filter>

@@ -67,11 +67,11 @@ public class UserDaoImp implements GenericDao<User> {
                 result = true;
             }else {
                 result = false;
-                throw new UserException("Nombre de usuario o email inválidos");
+                throw new UserException(prop.getProperty("resp.invalidUser"));
             }
         }else {
             result = false;
-            throw new UserException("Nombre de usuario o email inválidos");
+            throw new UserException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }
