@@ -1,6 +1,7 @@
 package com.waifus.servlets;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -30,9 +31,10 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
-        int i = 2;
-        User user = new User(i);
+
         try{
+            DecodedJWT decodedJWT = SecurityService.verifyJWT(req);
+            User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
             user = user.get();
             String jsonUser = responseService.toJson(user);
             responseService.outputResponse(resp, jsonUser,200);
