@@ -8,6 +8,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.waifus.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class SecurityService {
 
     private static final Algorithm algorithm = Algorithm.HMAC256("secret");
@@ -26,11 +29,12 @@ public class SecurityService {
                 .sign(algorithm);
     }
 
-    public static DecodedJWT verifyJWT(String token) throws JWTVerificationException {
+    public static DecodedJWT verifyJWT(HttpServletRequest req) throws JWTVerificationException {
+        String jwt = req.getHeader("Authorization");
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer("gjm")
                 .build();
-        return verifier.verify(token);
+        return verifier.verify(jwt);
     }
 
 

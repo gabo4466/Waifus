@@ -1,6 +1,7 @@
 package com.waifus.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -8,10 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.MessageDigest;
+import java.util.Properties;
 
 public class ResponseService<G> {
 
+    private Properties prop;
+
     public ResponseService() {
+        this.prop = PropertiesService.getProperties("config_es");
     }
 
     /**
@@ -39,7 +44,7 @@ public class ResponseService<G> {
      * @return Un string que contiene el Json del objeto
      */
     public String toJson(G obj) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyyMMdd").create();
         return gson.toJson(obj);
     }
 
@@ -78,5 +83,10 @@ public class ResponseService<G> {
         json.add("res", resp);
         json.add("message", message);
         return json.toString();
+    }
+
+    public void notLoggedResponse(HttpServletResponse response){
+        String error = errorResponse(prop.getProperty("resp.notLogged"));
+        outputResponse(response, error,401);
     }
 }

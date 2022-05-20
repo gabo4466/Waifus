@@ -36,6 +36,14 @@
     <servlet-name>activationCode</servlet-name>
     <url-pattern>/activationCode</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>profile</servlet-name>
+    <servlet-class>com.waifus.servlets.ProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>profile</servlet-name>
+    <url-pattern>/profile</url-pattern>
+  </servlet-mapping>
 
 
   <filter>

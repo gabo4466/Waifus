@@ -86,6 +86,10 @@ public class User {
         this.password = password;
     }
 
+    public User(int idUser) {
+        this.idUser = idUser;
+    }
+
     public int getIdUser() {
         return idUser;
     }
@@ -246,4 +250,7 @@ public class User {
         return UserDaoImp.getInstance().add(this);
     }
 
+    public User get() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().get(this.idUser);
+    }
 }
