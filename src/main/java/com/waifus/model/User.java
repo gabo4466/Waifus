@@ -61,6 +61,10 @@ public class User {
         this.theme = theme;
     }
 
+    public User(int idUser) {
+        this.idUser = idUser;
+    }
+
     public int getIdUser() {
         return idUser;
     }
@@ -193,4 +197,7 @@ public class User {
         return UserDaoImp.getInstance().logIn(this);
     }
 
+    public User get() throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().get(this.idUser);
+    }
 }
