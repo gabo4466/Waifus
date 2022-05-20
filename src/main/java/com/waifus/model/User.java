@@ -197,7 +197,7 @@ public class User {
         return UserDaoImp.getInstance().logIn(this);
     }
 
-    public User get() throws SQLException, ClassNotFoundException {
+    public User get() throws SQLException, ClassNotFoundException, UserException {
         return UserDaoImp.getInstance().get(this.idUser);
     }
 }

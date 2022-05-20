@@ -53,7 +53,7 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public User get(int id) throws SQLException {
+    public User get(int id) throws SQLException, UserException {
         User result=null;
         String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where id_user=?";
         PreparedStatement stmt2 = this.connection.prepareStatement(query);
@@ -67,6 +67,9 @@ public class UserDaoImp implements GenericDao<User> {
                     rs2.getString("profile_photo"), rs2.getString("country"),
                     rs2.getString("description"), rs2.getInt("karma"),
                     rs2.getString("theme"));
+        }else{
+            result = null;
+            throw new UserException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }
@@ -96,22 +99,7 @@ public class UserDaoImp implements GenericDao<User> {
                 result = null;
                 throw new UserException("Cuenta baneada");
             }else{
-                query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where email=?";
-                PreparedStatement stmt2 = this.connection.prepareStatement(query);
-                stmt2.setString(1, userExists.getEmail());
-                ResultSet rs2 = stmt2.executeQuery();
-                if (rs2.next()){
-                    result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
-                                    rs2.getBoolean("adult_content"), rs2.getString("nickname"),
-                                    rs2.getBoolean("admin"), rs2.getString("name"),
-                                    rs2.getString("email"), rs2.getDate("birthday"),
-                                    rs2.getString("profile_photo"), rs2.getString("country"),
-                                    rs2.getString("description"), rs2.getInt("karma"),
-                                    rs2.getString("theme"));
-                }else{
-                    result = null;
-                    throw new UserException(prop.getProperty("resp.invalidUser"));
-                }
+                result = this.get(userExists.getIdUser());
             }
         }else{
             result = null;
