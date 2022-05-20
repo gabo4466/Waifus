@@ -38,20 +38,18 @@ public class RegisterServlet extends HttpServlet {
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
         try{
-            boolean registered = user.register();
+            User userRegistered = user.register();
             JsonObject json = new JsonObject();
-            if (registered){
-                json.add("registered", new JsonPrimitive("ok"));
-            }else {
-                json.add("registered", new JsonPrimitive("ko"));
-            }
+            json.add("registered", new JsonPrimitive("ok"));
+            json.add("userRegistered", new Gson().toJsonTree(userRegistered));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("db.failed"));
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("db.failed")), 200);
         }catch (Exception e){
             System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());

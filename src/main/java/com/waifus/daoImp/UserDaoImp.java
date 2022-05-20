@@ -46,8 +46,8 @@ public class UserDaoImp implements GenericDao<User> {
      * @throws UserException en caso de un error con relacion al usuario
      */
     @Override
-    public boolean add(User user) throws SQLException, UserException{
-        boolean result;
+    public User add(User user) throws SQLException, UserException{
+        User result;
         String query = "select id_user from waifus.users where email=? or nickname=?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
         stmt.setString(1, user.getEmail());
@@ -64,13 +64,22 @@ public class UserDaoImp implements GenericDao<User> {
             stmt2.setBoolean(6, user.isAdultContent());
             int rs2 = stmt2.executeUpdate();
             if (rs2>0){
-                result = true;
+                query = "select id_user from waifus.users where email=?";
+                stmt = this.connection.prepareStatement(query);
+                stmt.setString(1, user.getEmail());
+                rs = stmt.executeQuery();
+                if (rs.next()){
+                    result = this.get(rs.getInt("id_user"));
+                }else {
+                    result = null;
+                    throw new UserException(prop.getProperty("resp.invalidUser"));
+                }
             }else {
-                result = false;
+                result = null;
                 throw new UserException(prop.getProperty("resp.invalidUser"));
             }
         }else {
-            result = false;
+            result = null;
             throw new UserException(prop.getProperty("resp.invalidUser"));
         }
         return result;

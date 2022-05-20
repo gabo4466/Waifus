@@ -242,7 +242,7 @@ public class User {
      * @throws UserException
      * @throws IOException
      */
-    public Boolean register() throws SQLException, ClassNotFoundException, UserException, IOException {
+    public User register() throws SQLException, ClassNotFoundException, UserException, IOException {
         return UserDaoImp.getInstance().add(this);
     }
 

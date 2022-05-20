@@ -10,6 +10,7 @@ import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 import com.waifus.services.SecurityService;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,12 +32,22 @@ public class ActivationCodeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+        ResponseService<User> responseService = new ResponseService<User>();
         EmailService email = new EmailService();
         try {
             int code = email.activationCode();
-            email.sendMail(email.activationCodeHtml(code, "Jaime", "jaimeromeromaxi@gmail.com"), "jaimeromeromaxi@gmail.com", email.activationCodeSubject(code));
+            email.sendMail(email.activationCodeHtml(code, req.getParameter("nickname"), req.getParameter("email")), req.getParameter("email"), email.activationCodeSubject(code));
+            JsonObject json = new JsonObject();
+            json.add("activationCode",new JsonPrimitive(code));
+            responseService.outputResponse(resp, json.toString(), 200);
+        }catch (MessagingException e){
+            System.out.println(prop.getProperty("msg.error"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("msg.error")), 400);
         }catch (Exception e){
-
+            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
         }
     }
 

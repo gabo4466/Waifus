@@ -1,6 +1,7 @@
 package com.waifus.daoImp;
 
 import com.waifus.dao.GenericDao;
+import com.waifus.model.User;
 
 import java.util.ArrayList;
 
@@ -17,8 +18,8 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     }
 
     @Override
-    public boolean add(Thread obj) {
-        return false;
+    public Thread add(Thread obj) {
+        return null;
     }
 
     @Override
