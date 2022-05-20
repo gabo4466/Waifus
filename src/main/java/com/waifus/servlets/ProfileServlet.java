@@ -29,7 +29,7 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
-        int i = 1;
+        int i = 2;
         User user = new User(i);
         try{
             user = user.get();
