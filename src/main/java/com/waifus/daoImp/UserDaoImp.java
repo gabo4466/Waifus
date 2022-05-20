@@ -106,7 +106,7 @@ public class UserDaoImp implements GenericDao<User> {
             result = new User(rs2.getInt("id_user"), rs2.getString("gender"),
                     rs2.getBoolean("adult_content"), rs2.getString("nickname"),
                     rs2.getBoolean("admin"), rs2.getString("name"),
-                    rs2.getString("email"), rs2.getDate("birthday"),
+                    rs2.getString("email"), rs2.getString("birthday"),
                     rs2.getString("profile_photo"), rs2.getString("country"),
                     rs2.getString("description"), rs2.getInt("karma"),
                     rs2.getString("theme"));
