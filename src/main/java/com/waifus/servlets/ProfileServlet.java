@@ -1,5 +1,6 @@
 package com.waifus.servlets;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -39,7 +40,10 @@ public class ProfileServlet extends HttpServlet {
             System.out.println(prop.getProperty("db.failed"));
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
-        }catch (Exception e){
+        }catch (JWTVerificationException e){
+            responseService.notLoggedResponse(resp);
+            System.out.println(e.getMessage());
+        } catch (Exception e){
             System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
