@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.waifus.exceptions.UserException;
+import com.waifus.exceptions.UserNotFoundException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
@@ -40,13 +41,21 @@ public class LoginServlet extends HttpServlet {
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
-        try{
-            User userLogged = user.logIn();
+        User userLogged = null;
+        try {
+            userLogged = user.logIn();
             String jwt = SecurityService.createJWT(userLogged);
             JsonObject json = new JsonObject();
-            json.add("access",new JsonPrimitive(jwt));
+            json.add("access", new JsonPrimitive(jwt));
+            json.add("user", new Gson().toJsonTree(userLogged));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
+            JsonObject json = new JsonObject();
+            json.add("resp", new JsonPrimitive(e.getMessage()));
+            user.setPassword(null);
+            json.add("user", new Gson().toJsonTree(user));
+            responseService.outputResponse(resp, json.toString(), 403);
+        }catch (UserNotFoundException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){

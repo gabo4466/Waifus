@@ -2,6 +2,7 @@ package com.waifus.model;
 
 import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
+import com.waifus.exceptions.UserNotFoundException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class User {
     private boolean activated;
     private boolean banned;
     private String repPass;
+
+    public User() {
+    }
 
     /**
      * Constructor que se utiliza para el login
@@ -234,7 +238,7 @@ public class User {
      * @throws UserException
      * @throws IOException
      */
-    public User logIn() throws SQLException, ClassNotFoundException, UserException, IOException {
+    public User logIn() throws SQLException, ClassNotFoundException, UserException, IOException, UserNotFoundException {
         return UserDaoImp.getInstance().logIn(this);
     }
 
@@ -246,11 +250,15 @@ public class User {
      * @throws UserException
      * @throws IOException
      */
-    public User register() throws SQLException, ClassNotFoundException, UserException, IOException {
+    public User register() throws SQLException, ClassNotFoundException, UserException, IOException, UserNotFoundException {
         return UserDaoImp.getInstance().add(this);
     }
 
-    public User get() throws SQLException, ClassNotFoundException, UserException {
+    public User get() throws SQLException, ClassNotFoundException, UserNotFoundException {
         return UserDaoImp.getInstance().get(this.idUser);
+    }
+
+    public boolean update() throws SQLException, ClassNotFoundException, UserException {
+        return  UserDaoImp.getInstance().update(this);
     }
 }

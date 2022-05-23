@@ -1,5 +1,6 @@
 package com.waifus.daoImp;
 
+import com.waifus.exceptions.UserNotFoundException;
 import com.waifus.services.DBConnection;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.UserException;
@@ -28,8 +29,33 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public boolean update(User obj) {
-        return false;
+    public boolean update(User user) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set gender = ?, adult_content = ?, nickname = ?, admin = ?, name = ?, email = ?, birthday = ?, profile_photo = ?, country = ?, description = ?, karma = ?, theme = ?, activated = ?, banned = ? where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getGender());
+        stmt.setBoolean(2, user.isAdultContent());
+        stmt.setString(3, user.getNickname());
+        stmt.setBoolean(4, user.isAdmin());
+        stmt.setString(5, user.getName());
+        stmt.setString(6, user.getEmail());
+        stmt.setString(7, user.getBirthday());
+        stmt.setString(8, user.getProfilePhoto());
+        stmt.setString(9, user.getCountry());
+        stmt.setString(10, user.getDescription());
+        stmt.setInt(11, user.getKarma());
+        stmt.setString(12, user.getTheme());
+        stmt.setBoolean(13, user.isActivated());
+        stmt.setBoolean(14, user.isBanned());
+        stmt.setInt(15, user.getIdUser());
+        int rs = stmt.executeUpdate();
+        if(rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("resp.error"));
+        }
+        return result;
     }
 
     @Override
@@ -46,7 +72,7 @@ public class UserDaoImp implements GenericDao<User> {
      * @throws UserException en caso de un error con relacion al usuario
      */
     @Override
-    public User add(User user) throws SQLException, UserException{
+    public User add(User user) throws SQLException, UserException, UserNotFoundException {
         User result;
         String query = "select id_user from waifus.users where email=? or nickname=?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -96,7 +122,7 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public User get(int id) throws SQLException, UserException {
+    public User get(int id) throws SQLException, UserNotFoundException {
         User result=null;
         String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users where id_user=?";
         PreparedStatement stmt2 = this.connection.prepareStatement(query);
@@ -112,7 +138,7 @@ public class UserDaoImp implements GenericDao<User> {
                     rs2.getString("theme"));
         }else{
             result = null;
-            throw new UserException(prop.getProperty("resp.invalidUser"));
+            throw new UserNotFoundException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }
@@ -125,7 +151,7 @@ public class UserDaoImp implements GenericDao<User> {
      * @throws SQLException en caso de un error de base de datos
      * @throws UserException en caso de un error con relacion al usuario
      */
-    public User logIn (User userNotLogged) throws SQLException, UserException {
+    public User logIn (User userNotLogged) throws SQLException, UserException, UserNotFoundException, ClassNotFoundException {
         User result;
         String query = "select id_user, email, banned, activated from waifus.users where email=? and password=?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -136,17 +162,17 @@ public class UserDaoImp implements GenericDao<User> {
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
 
             if (!userExists.isActivated()){
-                result = null;
-                throw new UserException("Cuenta desactivada");
+                result = userExists.get();
+                throw new UserException(prop.getProperty("resp.notActiveAccount"));
             }else if (userExists.isBanned()){
                 result = null;
-                throw new UserException("Cuenta baneada");
+                throw new UserNotFoundException(prop.getProperty("resp.bannedAccount"));
             }else{
-                result = this.get(userExists.getIdUser());
+                result = userExists.get();
             }
         }else{
             result = null;
-            throw new UserException(prop.getProperty("resp.invalidUser"));
+            throw new UserNotFoundException(prop.getProperty("resp.invalidUser"));
         }
         return result;
     }
