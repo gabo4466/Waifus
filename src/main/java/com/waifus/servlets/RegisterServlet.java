@@ -45,15 +45,15 @@ public class RegisterServlet extends HttpServlet {
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){
             System.out.println(prop.getProperty("db.failed"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("db.failed")), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("db.failed")), 400);
         }catch (Exception e){
             System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }
     }
 }

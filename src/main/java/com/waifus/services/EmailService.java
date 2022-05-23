@@ -8,9 +8,11 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailService {
     public static Properties prop;
+    public static Properties prop2;
 
     public EmailService() {
         prop = PropertiesService.getProperties("keys");
+        prop2 = PropertiesService.getProperties("config_es");
     }
 
     public void sendMail(String html, String to, String subject) throws MessagingException{
@@ -43,10 +45,10 @@ public class EmailService {
     }
 
     public String activationCodeHtml(String code, String user, String email) throws MessagingException {
-        return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>su código de activación es:</p><h1 style='text-align:center;'>"+code+"</h1></div>";
+        return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>"+prop2.getProperty("msg.actv.body")+"</p><h1 style='text-align:center;'>"+code+"</h1></div>";
     }
 
     public String activationCodeSubject(String  code) throws MessagingException {
-        return code + " es tu código de activación de Waifus";
+        return code + prop2.getProperty("msg.actv.subj");
     }
 }
