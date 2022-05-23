@@ -3,6 +3,7 @@ package com.waifus.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
@@ -17,11 +18,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class LoginServlet extends HttpServlet {
-
+public class RegisterServlet extends HttpServlet {
     private Properties prop;
 
-    @Override
     public void init() throws ServletException {
         super.init();
         // AQUI SE HARIA EL CAMBIO DE IDIOMA
@@ -29,10 +28,8 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // mucho texto
-        ResponseService<User> responseService = new ResponseService<User>();
-        responseService.outputResponse(resp, "{\"prueba\":\"Good\"}", 200);
     }
 
     @Override
@@ -41,24 +38,22 @@ public class LoginServlet extends HttpServlet {
         User user = new Gson().fromJson(req.getReader(), User.class);
         user.setPassword(responseService.toHash(user.getPassword()));
         try{
-            User userLogged = user.logIn();
-            String jwt = SecurityService.createJWT(userLogged);
+            User userRegistered = user.register();
             JsonObject json = new JsonObject();
-            json.add("access",new JsonPrimitive(jwt));
+            json.add("registered", new JsonPrimitive("ok"));
+            json.add("userRegistered", new Gson().toJsonTree(userRegistered));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("db.failed"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("db.failed")), 200);
         }catch (Exception e){
             System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
         }
-
-
     }
 }
