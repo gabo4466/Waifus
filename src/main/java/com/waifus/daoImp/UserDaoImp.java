@@ -161,12 +161,12 @@ public class UserDaoImp implements GenericDao<User> {
         if (rs.next()){
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
 
-            if (!userExists.isActivated()){
-                result = userExists.get();
-                throw new UserException(prop.getProperty("resp.notActiveAccount"));
-            }else if (userExists.isBanned()){
+            if (userExists.isBanned()){
                 result = null;
                 throw new UserNotFoundException(prop.getProperty("resp.bannedAccount"));
+            }else if (!userExists.isActivated()){
+                result = null;
+                throw new UserException(prop.getProperty("resp.notActiveAccount"));
             }else{
                 result = userExists.get();
             }
