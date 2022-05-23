@@ -28,8 +28,33 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public boolean update(User obj) {
-        return false;
+    public boolean update(User user) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set gender = ?, adult_content = ?, nickname = ?, admin = ?, name = ?, email = ?, birthday = ?, profile_photo = ?, country = ?, description = ?, karma = ?, theme = ?, activated = ?, banned = ? where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getGender());
+        stmt.setBoolean(2, user.isAdultContent());
+        stmt.setString(3, user.getNickname());
+        stmt.setBoolean(4, user.isAdmin());
+        stmt.setString(5, user.getName());
+        stmt.setString(6, user.getEmail());
+        stmt.setString(7, user.getBirthday());
+        stmt.setString(8, user.getProfilePhoto());
+        stmt.setString(9, user.getCountry());
+        stmt.setString(10, user.getDescription());
+        stmt.setInt(11, user.getKarma());
+        stmt.setString(12, user.getTheme());
+        stmt.setBoolean(13, user.isActivated());
+        stmt.setBoolean(14, user.isBanned());
+        stmt.setInt(15, user.getIdUser());
+        int rs = stmt.executeUpdate();
+        if(rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("resp.error"));
+        }
+        return result;
     }
 
     @Override

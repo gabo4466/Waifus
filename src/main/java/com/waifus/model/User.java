@@ -26,6 +26,9 @@ public class User {
     private boolean banned;
     private String repPass;
 
+    public User() {
+    }
+
     /**
      * Constructor que se utiliza para el login
      * @param email
@@ -252,5 +255,9 @@ public class User {
 
     public User get() throws SQLException, ClassNotFoundException, UserException {
         return UserDaoImp.getInstance().get(this.idUser);
+    }
+
+    public boolean update() throws SQLException, ClassNotFoundException, UserException {
+        return  UserDaoImp.getInstance().update(this);
     }
 }
