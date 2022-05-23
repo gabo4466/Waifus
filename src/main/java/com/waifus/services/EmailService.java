@@ -49,6 +49,6 @@ public class EmailService {
     }
 
     public String activationCodeSubject(String  code) throws MessagingException {
-        return code + prop2.getProperty("msg.actv.subj");
+        return code + " " + prop2.getProperty("msg.actv.subj");
     }
 }
