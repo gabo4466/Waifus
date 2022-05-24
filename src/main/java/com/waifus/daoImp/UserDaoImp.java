@@ -121,6 +121,13 @@ public class UserDaoImp implements GenericDao<User> {
         return null;
     }
 
+    /**
+     * Metodo que pasa un id a la base de datos y retorna los datos solicitados de la base de datos del usuario al que pertenece el id
+     * @param id
+     * @return un bjeto de tipo User que contiene los datos solicitados
+     * @throws SQLException en caso de un error de base de datos
+     * @throws UserNotFoundException en caso de un error al intentar encontrar al usuario solicitado
+     */
     @Override
     public User get(int id) throws SQLException, UserNotFoundException {
         User result=null;
