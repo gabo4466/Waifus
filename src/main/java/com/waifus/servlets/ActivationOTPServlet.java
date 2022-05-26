@@ -41,13 +41,13 @@ public class ActivationOTPServlet extends HttpServlet {
             json.add("activationOTP",new JsonPrimitive(codeSent));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (MessagingException e){
-            System.out.println(prop.getProperty("msg.error"));
+            System.out.println(prop.getProperty("error.email"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("msg.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.email")), 400);
         }catch (Exception e){
-            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(prop.getProperty("error.generic"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
     }
 
@@ -73,9 +73,9 @@ public class ActivationOTPServlet extends HttpServlet {
                 responseService.outputResponse(resp, json.toString(), 400);
             }
         }catch (Exception e){
-            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(prop.getProperty("error.generic"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
     }
 }
