@@ -29,12 +29,12 @@
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>activationCode</servlet-name>
-    <servlet-class>com.waifus.servlets.ActivationCodeServlet</servlet-class>
+    <servlet-name>activationOTP</servlet-name>
+    <servlet-class>com.waifus.servlets.ActivationOTPServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>activationCode</servlet-name>
-    <url-pattern>/activationCode</url-pattern>
+    <servlet-name>activationOTP</servlet-name>
+    <url-pattern>/activationOTP</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>profile</servlet-name>

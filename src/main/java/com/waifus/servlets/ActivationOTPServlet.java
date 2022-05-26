@@ -3,12 +3,10 @@ package com.waifus.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.EmailService;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.SecurityService;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
@@ -16,10 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
-public class ActivationCodeServlet extends HttpServlet {
+public class ActivationOTPServlet extends HttpServlet {
 
     private Properties prop;
 
@@ -37,11 +34,11 @@ public class ActivationCodeServlet extends HttpServlet {
         User user = new User(Integer.parseInt(String.valueOf(req.getParameter("idUser"))));
         try {
             user = user.get();
-            String codeSent = email.activationCode();
-            email.sendMail(email.activationCodeHtml(codeSent, user.getNickname(), user.getEmail()), user.getEmail(), email.activationCodeSubject(codeSent));
+            String codeSent = email.generateOTP();
+            email.sendMail(email.activationOTPHtml(codeSent, user.getNickname(), user.getEmail()), user.getEmail(), email.activationOTPSubject(codeSent));
             codeSent = responseService.toHash(codeSent);
             JsonObject json = new JsonObject();
-            json.add("activationCode",new JsonPrimitive(codeSent));
+            json.add("activationOTP",new JsonPrimitive(codeSent));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (MessagingException e){
             System.out.println(prop.getProperty("msg.error"));
