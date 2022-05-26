@@ -3,12 +3,10 @@ package com.waifus.servlets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.SecurityService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,15 +43,15 @@ public class RegisterServlet extends HttpServlet {
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (UserException e){
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){
-            System.out.println(prop.getProperty("db.failed"));
+            System.out.println(prop.getProperty("error.db"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("db.failed")), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.db")), 400);
         }catch (Exception e){
-            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(prop.getProperty("error.generic"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }
     }
 }

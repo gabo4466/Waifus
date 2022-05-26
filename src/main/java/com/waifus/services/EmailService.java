@@ -8,9 +8,10 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailService {
     public static Properties prop;
+    public static Properties prop2;
 
     public EmailService() {
-        prop = PropertiesService.getProperties("keys");
+        prop = PropertiesService.getProperties("config_es");
     }
 
     public void sendMail(String html, String to, String subject) throws MessagingException{
@@ -33,7 +34,7 @@ public class EmailService {
         Transport.send(message);
     }
 
-    public String activationCode() throws MessagingException {
+    public String generateOTP() throws MessagingException {
         String result = "";
         Random random = new Random();
         for (int i=0; i<6; i++){
@@ -42,11 +43,11 @@ public class EmailService {
         return result;
     }
 
-    public String activationCodeHtml(String code, String user, String email) throws MessagingException {
-        return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>su código de activación es:</p><h1 style='text-align:center;'>"+code+"</h1></div>";
+    public String activationOTPHtml(String code, String user, String email) throws MessagingException {
+        return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>"+prop.getProperty("email.actv.body")+"</p><h1 style='text-align:center;'>"+code+"</h1></div>";
     }
 
-    public String activationCodeSubject(String  code) throws MessagingException {
-        return code + " es tu código de activación de Waifus";
+    public String activationOTPSubject(String  code) throws MessagingException {
+        return code + " " + prop2.getProperty("email.actv.subj");
     }
 }

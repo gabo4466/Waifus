@@ -59,13 +59,13 @@ public class LoginServlet extends HttpServlet {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){
-            System.out.println(prop.getProperty("db.failed"));
+            System.out.println(prop.getProperty("error.db"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }catch (Exception e){
-            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(prop.getProperty("error.generic"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
 
 

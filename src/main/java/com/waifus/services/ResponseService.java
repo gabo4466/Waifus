@@ -90,7 +90,7 @@ public class ResponseService<G> {
      * @param response
      */
     public void notLoggedResponse(HttpServletResponse response){
-        String error = errorResponse(prop.getProperty("resp.notLogged"));
+        String error = errorResponse(prop.getProperty("error.notLogged"));
         outputResponse(response, error,401);
     }
 }
