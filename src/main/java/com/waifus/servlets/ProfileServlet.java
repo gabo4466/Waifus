@@ -2,6 +2,9 @@ package com.waifus.servlets;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
@@ -54,9 +57,18 @@ public class ProfileServlet extends HttpServlet {
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
         try{
-            user.update();
-            JsonObject json = new JsonObject();
-            responseService.outputResponse(resp, json.toString(), 200);
+            DecodedJWT decodedJWT = SecurityService.verifyJWT(req);
+            int id = Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser")));
+            if (id==user.getIdUser()){
+                user.setIdUser(id);
+                user.update();
+                JsonObject json = new JsonObject();
+                json.add("act.user");
+                responseService.outputResponse(resp, json.toString(), 200);
+            }else {
+                responseService.notLoggedResponse(resp);
+            }
+
         }catch (SQLException e){
             System.out.println(prop.getProperty("db.failed"));
             System.out.println(e.getMessage());
@@ -64,6 +76,9 @@ public class ProfileServlet extends HttpServlet {
         } catch (UserException e) {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+        }catch (JWTVerificationException e){
+            responseService.notLoggedResponse(resp);
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(prop.getProperty("resp.error"));
             System.out.println(e.getMessage());
