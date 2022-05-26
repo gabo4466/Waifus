@@ -48,6 +48,6 @@ public class EmailService {
     }
 
     public String activationOTPSubject(String  code) throws MessagingException {
-        return code + " " + prop2.getProperty("email.actv.subj");
+        return code + " " + prop.getProperty("email.actv.subj");
     }
 }
