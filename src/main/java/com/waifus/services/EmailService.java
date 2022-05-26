@@ -35,7 +35,7 @@ public class EmailService {
         Transport.send(message);
     }
 
-    public String activationCode() throws MessagingException {
+    public String activationOTP() throws MessagingException {
         String result = "";
         Random random = new Random();
         for (int i=0; i<6; i++){
@@ -44,11 +44,11 @@ public class EmailService {
         return result;
     }
 
-    public String activationCodeHtml(String code, String user, String email) throws MessagingException {
+    public String activationOTPHtml(String code, String user, String email) throws MessagingException {
         return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>"+prop2.getProperty("msg.actv.body")+"</p><h1 style='text-align:center;'>"+code+"</h1></div>";
     }
 
-    public String activationCodeSubject(String  code) throws MessagingException {
+    public String activationOTPSubject(String  code) throws MessagingException {
         return code + " " + prop2.getProperty("msg.actv.subj");
     }
 }
