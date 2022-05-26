@@ -34,7 +34,7 @@ public class ActivationOTPServlet extends HttpServlet {
         User user = new User(Integer.parseInt(String.valueOf(req.getParameter("idUser"))));
         try {
             user = user.get();
-            String codeSent = email.activationOTP();
+            String codeSent = email.generateOTP();
             email.sendMail(email.activationOTPHtml(codeSent, user.getNickname(), user.getEmail()), user.getEmail(), email.activationOTPSubject(codeSent));
             codeSent = responseService.toHash(codeSent);
             JsonObject json = new JsonObject();

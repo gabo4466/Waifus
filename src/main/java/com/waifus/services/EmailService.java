@@ -35,7 +35,7 @@ public class EmailService {
         Transport.send(message);
     }
 
-    public String activationOTP() throws MessagingException {
+    public String generateOTP() throws MessagingException {
         String result = "";
         Random random = new Random();
         for (int i=0; i<6; i++){
