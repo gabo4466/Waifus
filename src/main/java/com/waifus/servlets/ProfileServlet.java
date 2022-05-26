@@ -2,10 +2,6 @@ package com.waifus.servlets;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
@@ -39,16 +35,16 @@ public class ProfileServlet extends HttpServlet {
             String jsonUser = responseService.toJson(user);
             responseService.outputResponse(resp, jsonUser,200);
         }catch (SQLException e){
-            System.out.println(prop.getProperty("db.failed"));
+            System.out.println(prop.getProperty("error.db"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }catch (JWTVerificationException e){
             responseService.notLoggedResponse(resp);
             System.out.println(e.getMessage());
         } catch (Exception e){
-            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(prop.getProperty("error.generic"));
             System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
 
     }

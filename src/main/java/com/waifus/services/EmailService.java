@@ -11,8 +11,7 @@ public class EmailService {
     public static Properties prop2;
 
     public EmailService() {
-        prop = PropertiesService.getProperties("keys");
-        prop2 = PropertiesService.getProperties("config_es");
+        prop = PropertiesService.getProperties("config_es");
     }
 
     public void sendMail(String html, String to, String subject) throws MessagingException{
@@ -45,10 +44,10 @@ public class EmailService {
     }
 
     public String activationOTPHtml(String code, String user, String email) throws MessagingException {
-        return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>"+prop2.getProperty("msg.actv.body")+"</p><h1 style='text-align:center;'>"+code+"</h1></div>";
+        return "<div style='padding:0 450px; text-align:left;'><h2>Waifus</h2><p>Bienvenido "+user+" a Waifus,</p><p>"+prop.getProperty("email.actv.body")+"</p><h1 style='text-align:center;'>"+code+"</h1></div>";
     }
 
     public String activationOTPSubject(String  code) throws MessagingException {
-        return code + " " + prop2.getProperty("msg.actv.subj");
+        return code + " " + prop2.getProperty("email.actv.subj");
     }
 }

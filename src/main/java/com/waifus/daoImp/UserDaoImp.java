@@ -53,7 +53,7 @@ public class UserDaoImp implements GenericDao<User> {
             result = true;
         }else {
             result = false;
-            throw new UserException(prop.getProperty("resp.error"));
+            throw new UserException(prop.getProperty("error.generic"));
         }
         return result;
     }
@@ -98,15 +98,15 @@ public class UserDaoImp implements GenericDao<User> {
                     result = this.get(rs.getInt("id_user"));
                 }else {
                     result = null;
-                    throw new UserException(prop.getProperty("resp.invalidUser"));
+                    throw new UserException(prop.getProperty("error.invalidUser"));
                 }
             }else {
                 result = null;
-                throw new UserException(prop.getProperty("resp.invalidUser"));
+                throw new UserException(prop.getProperty("error.invalidUser"));
             }
         }else {
             result = null;
-            throw new UserException(prop.getProperty("resp.invalidUser"));
+            throw new UserException(prop.getProperty("error.invalidUser"));
         }
         return result;
     }
@@ -138,7 +138,7 @@ public class UserDaoImp implements GenericDao<User> {
                     rs2.getString("theme"));
         }else{
             result = null;
-            throw new UserNotFoundException(prop.getProperty("resp.invalidUser"));
+            throw new UserNotFoundException(prop.getProperty("error.invalidUser"));
         }
         return result;
     }
@@ -163,16 +163,16 @@ public class UserDaoImp implements GenericDao<User> {
 
             if (!userExists.isActivated()){
                 result = userExists.get();
-                throw new UserException(prop.getProperty("resp.notActiveAccount"));
+                throw new UserException(prop.getProperty("error.notActiveAccount"));
             }else if (userExists.isBanned()){
                 result = null;
-                throw new UserNotFoundException(prop.getProperty("resp.bannedAccount"));
+                throw new UserNotFoundException(prop.getProperty("error.bannedAccount"));
             }else{
                 result = userExists.get();
             }
         }else{
             result = null;
-            throw new UserNotFoundException(prop.getProperty("resp.invalidUser"));
+            throw new UserNotFoundException(prop.getProperty("error.invalidUser"));
         }
         return result;
     }
