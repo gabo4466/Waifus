@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
@@ -63,7 +64,7 @@ public class ProfileServlet extends HttpServlet {
                 user.setIdUser(id);
                 user.update();
                 JsonObject json = new JsonObject();
-                json.add("act.user");
+                json.add("respact", new JsonPrimitive(prop.getProperty("act.user")));
                 responseService.outputResponse(resp, json.toString(), 200);
             }else {
                 responseService.notLoggedResponse(resp);
