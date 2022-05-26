@@ -55,7 +55,25 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ResponseService<User> responseService = new ResponseService<User>();
+        User user = new Gson().fromJson(req.getReader(), User.class);
+        try{
+            user.update();
+            JsonObject json = new JsonObject();
+            responseService.outputResponse(resp, json.toString(), 200);
+        }catch (SQLException e){
+            System.out.println(prop.getProperty("db.failed"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
+        } catch (UserException e) {
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
+        } catch (Exception e) {
+            System.out.println(prop.getProperty("resp.error"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
 
+        }
 
     }
 }
