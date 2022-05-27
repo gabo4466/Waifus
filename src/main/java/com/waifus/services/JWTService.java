@@ -33,8 +33,18 @@ public class JWTService {
                 .sign(algorithm);
     }
 
-    public static DecodedJWT verifyJWT(HttpServletRequest req) throws JWTVerificationException {
-        String jwt = req.getHeader("Authorization");
+    public static String createJWTOTP(User user, String otp) throws JWTCreationException {
+        long expireTime = (new Date().getTime()) + 86400000;
+        Date expireDate = new Date(expireTime);
+        return JWT.create()
+                .withClaim("idUser", user.getIdUser())
+                .withClaim("OTP", otp)
+                .withIssuer("gjm")
+                .withExpiresAt(expireDate)
+                .sign(algorithm);
+    }
+
+    public static DecodedJWT verifyJWT(String jwt) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer("gjm")
                 .build();

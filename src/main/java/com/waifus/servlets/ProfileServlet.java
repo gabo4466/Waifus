@@ -27,9 +27,9 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
-
+        String jwt = req.getHeader("Authorization");
         try{
-            DecodedJWT decodedJWT = JWTService.verifyJWT(req);
+            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
             user = user.get();
             String jsonUser = responseService.toJson(user);
