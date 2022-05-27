@@ -10,14 +10,17 @@ import com.waifus.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
-public class SecurityService {
+public class JWTService {
 
     private static final Algorithm algorithm = Algorithm.HMAC256("secret");
 
-    private SecurityService(){
+    private JWTService(){
     }
     public static String createJWT(User user) throws JWTCreationException {
+        long expireTime = (new Date().getTime()) + 86400000;
+        Date expireDate = new Date(expireTime);
         return JWT.create()
                 .withClaim("idUser", user.getIdUser())
                 .withClaim("adult_content", user.isAdultContent())
@@ -26,6 +29,7 @@ public class SecurityService {
                 .withClaim("name", user.getName())
                 .withClaim("email", user.getEmail())
                 .withIssuer("gjm")
+                .withExpiresAt(expireDate)
                 .sign(algorithm);
     }
 

@@ -8,7 +8,7 @@ import com.waifus.exceptions.UserNotFoundException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.SecurityService;
+import com.waifus.services.JWTService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         User userLogged = null;
         try {
             userLogged = user.logIn();
-            String jwt = SecurityService.createJWT(userLogged);
+            String jwt = JWTService.createJWT(userLogged);
             JsonObject json = new JsonObject();
             json.add("access", new JsonPrimitive(jwt));
             json.add("user", new Gson().toJsonTree(userLogged));
