@@ -8,7 +8,7 @@ import com.waifus.exceptions.UserNotFoundException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.SecurityService;
+import com.waifus.services.JWTService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,8 +32,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         // mucho texto
-        ResponseService<User> responseService = new ResponseService<User>();
-        responseService.outputResponse(resp, "{\"prueba\":\"Good\"}", 200);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         User userLogged = null;
         try {
             userLogged = user.logIn();
-            String jwt = SecurityService.createJWT(userLogged);
+            String jwt = JWTService.createJWT(userLogged);
             JsonObject json = new JsonObject();
             json.add("access", new JsonPrimitive(jwt));
             json.add("user", new Gson().toJsonTree(userLogged));
@@ -54,7 +52,7 @@ public class LoginServlet extends HttpServlet {
             json.add("resp", new JsonPrimitive(e.getMessage()));
             user.setPassword(null);
             json.add("user", new Gson().toJsonTree(user));
-            responseService.outputResponse(resp, json.toString(), 403);
+            responseService.outputResponse(resp, json.toString(), 202);
         }catch (UserNotFoundException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);

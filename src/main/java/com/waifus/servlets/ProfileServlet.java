@@ -5,7 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.SecurityService;
+import com.waifus.services.JWTService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +29,7 @@ public class ProfileServlet extends HttpServlet {
         ResponseService<User> responseService = new ResponseService<User>();
 
         try{
-            DecodedJWT decodedJWT = SecurityService.verifyJWT(req);
+            DecodedJWT decodedJWT = JWTService.verifyJWT(req);
             User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
             user = user.get();
             String jsonUser = responseService.toJson(user);
