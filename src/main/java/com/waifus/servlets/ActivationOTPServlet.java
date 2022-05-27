@@ -1,10 +1,12 @@
 package com.waifus.servlets;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.waifus.model.User;
 import com.waifus.services.EmailService;
+import com.waifus.services.JWTService;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 
@@ -36,9 +38,9 @@ public class ActivationOTPServlet extends HttpServlet {
             user = user.get();
             String codeSent = email.generateOTP();
             email.sendMail(email.activationOTPHtml(codeSent, user.getNickname(), user.getEmail()), user.getEmail(), email.activationOTPSubject(codeSent));
-            codeSent = responseService.toHash(codeSent);
             JsonObject json = new JsonObject();
-            json.add("activationOTP",new JsonPrimitive(codeSent));
+            String jwt = JWTService.createJWTOTP(user, codeSent);
+            json.add("activationOTP",new JsonPrimitive(jwt));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (MessagingException e){
             System.out.println(prop.getProperty("error.email"));
@@ -54,11 +56,13 @@ public class ActivationOTPServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
-        User user = new User(Integer.parseInt(String.valueOf(req.getParameter("idUser"))));
+        String jwt = req.getHeader("Authorization");
         try {
+            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
+            User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
             user = user.get();
-            String codeSent = req.getParameter("codeSent");
-            String codeRec = responseService.toHash(req.getParameter("codeRec"));
+            String codeSent = String.valueOf(decodedJWT.getClaim("OTP"));
+            String codeRec = req.getParameter("codeRec");
             if(codeRec.equals(codeSent)){
                 user.setActivated(true);
                 user.update();
