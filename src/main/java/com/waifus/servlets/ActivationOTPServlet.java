@@ -58,7 +58,6 @@ public class ActivationOTPServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
         String jwt = req.getHeader("Authorization");
-        System.out.println("JWT:" + jwt);
         try {
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
