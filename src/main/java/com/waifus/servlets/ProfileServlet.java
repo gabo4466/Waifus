@@ -55,10 +55,11 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String jwt = req.getHeader("Authorization");
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
         try{
-            DecodedJWT decodedJWT = SecurityService.verifyJWT(req);
+            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             int id = Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser")));
             if (id==user.getIdUser()){
                 user.setIdUser(id);
