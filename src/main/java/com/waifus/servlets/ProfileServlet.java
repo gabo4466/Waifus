@@ -9,7 +9,7 @@ import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.SecurityService;
+import com.waifus.services.JWTService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,9 +31,9 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
-
+        String jwt = req.getHeader("Authorization");
         try{
-            DecodedJWT decodedJWT = SecurityService.verifyJWT(req);
+            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
             user = user.get();
             String jsonUser = responseService.toJson(user);

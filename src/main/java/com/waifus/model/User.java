@@ -291,4 +291,8 @@ public class User {
     public boolean update() throws SQLException, ClassNotFoundException, UserException {
         return  UserDaoImp.getInstance().update(this);
     }
+
+    public int getId() throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().getId(this);
+    }
 }

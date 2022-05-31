@@ -190,4 +190,16 @@ public class UserDaoImp implements GenericDao<User> {
         }
         return result;
     }
+
+    public int getId(User user) throws SQLException {
+        int result = 0;
+        String query = "select id_user from waifus.users where email=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getEmail());
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()){
+            result = rs.getInt("id_user");
+        }
+        return result;
+    }
 }
