@@ -177,26 +177,26 @@ public class UserDaoImp implements GenericDao<User> {
         return result;
     }
 
-    public boolean emailCheck(User user) throws SQLException, UserException, UserNotFoundException {
+    public boolean emailCheck(User user) throws SQLException {
         boolean result;
         String query = "select id_user from waifus.users where email=?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
         stmt.setString(1, user.getEmail());
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
-            throw new UserException(prop.getProperty("error.invalidUser"));
+            return false;
         }
         return true;
     }
 
-    public boolean nicknameCheck(User user) throws SQLException, UserException, UserNotFoundException {
+    public boolean nicknameCheck(User user) throws SQLException {
         boolean result;
         String query = "select id_user from waifus.users where nickname=?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
         stmt.setString(1, user.getNickname());
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
-            throw new UserException(prop.getProperty("error.invalidUser"));
+            return false;
         }
         return true;
     }

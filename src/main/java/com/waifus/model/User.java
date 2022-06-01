@@ -262,11 +262,11 @@ public class User {
         return UserDaoImp.getInstance().update(this);
     }
 
-    public boolean emailCheck() throws SQLException, ClassNotFoundException, UserException, UserNotFoundException {
+    public boolean emailCheck() throws SQLException, ClassNotFoundException {
         return UserDaoImp.getInstance().emailCheck(this);
     }
 
-    public boolean nicknameCheck() throws SQLException, ClassNotFoundException, UserException, UserNotFoundException {
+    public boolean nicknameCheck() throws SQLException, ClassNotFoundException {
         return UserDaoImp.getInstance().nicknameCheck(this);
     }
 }
