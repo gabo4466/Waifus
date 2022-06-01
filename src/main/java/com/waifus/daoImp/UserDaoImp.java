@@ -28,6 +28,13 @@ public class UserDaoImp implements GenericDao<User> {
         return instance;
     }
 
+    /**
+     * Metodo que actualiza los datos del usuario
+     * @param user
+     * @return result
+     * @throws SQLException
+     * @throws UserException
+     */
     @Override
     public boolean update(User user) throws SQLException, UserException {
         boolean result;
@@ -53,7 +60,7 @@ public class UserDaoImp implements GenericDao<User> {
             result = true;
         }else {
             result = false;
-            throw new UserException(prop.getProperty("resp.error"));
+            throw new UserException(prop.getProperty("error.generic"));
         }
         return result;
     }
@@ -98,15 +105,15 @@ public class UserDaoImp implements GenericDao<User> {
                     result = this.get(rs.getInt("id_user"));
                 }else {
                     result = null;
-                    throw new UserException(prop.getProperty("resp.invalidUser"));
+                    throw new UserException(prop.getProperty("error.invalidUser"));
                 }
             }else {
                 result = null;
-                throw new UserException(prop.getProperty("resp.invalidUser"));
+                throw new UserException(prop.getProperty("error.invalidUser"));
             }
         }else {
             result = null;
-            throw new UserException(prop.getProperty("resp.invalidUser"));
+            throw new UserException(prop.getProperty("error.invalidUser"));
         }
         return result;
     }
@@ -121,6 +128,13 @@ public class UserDaoImp implements GenericDao<User> {
         return null;
     }
 
+    /**
+     * Metodo que pasa un id a la base de datos y retorna los datos solicitados de la base de datos del usuario al que pertenece el id
+     * @param id
+     * @return un objeto de tipo User que contiene los datos solicitados
+     * @throws SQLException en caso de un error de base de datos
+     * @throws UserNotFoundException en caso de un error al intentar encontrar al usuario solicitado
+     */
     @Override
     public User get(int id) throws SQLException, UserNotFoundException {
         User result=null;
@@ -138,7 +152,7 @@ public class UserDaoImp implements GenericDao<User> {
                     rs2.getString("theme"));
         }else{
             result = null;
-            throw new UserNotFoundException(prop.getProperty("resp.invalidUser"));
+            throw new UserNotFoundException(prop.getProperty("error.invalidUser"));
         }
         return result;
     }
@@ -161,18 +175,54 @@ public class UserDaoImp implements GenericDao<User> {
         if (rs.next()){
             User userExists = new User(rs.getInt("id_user"), rs.getString("email"), rs.getBoolean("activated"),rs.getBoolean("banned"));
 
-            if (!userExists.isActivated()){
-                result = userExists.get();
-                throw new UserException(prop.getProperty("resp.notActiveAccount"));
-            }else if (userExists.isBanned()){
+            if (userExists.isBanned()){
                 result = null;
-                throw new UserNotFoundException(prop.getProperty("resp.bannedAccount"));
+                throw new UserNotFoundException(prop.getProperty("error.bannedAccount"));
+            }else if (!userExists.isActivated()){
+                result = null;
+                throw new UserException(prop.getProperty("error.notActiveAccount"));
             }else{
                 result = userExists.get();
             }
         }else{
             result = null;
-            throw new UserNotFoundException(prop.getProperty("resp.invalidUser"));
+            throw new UserNotFoundException(prop.getProperty("error.invalidUser"));
+        }
+        return result;
+    }
+
+    public boolean emailCheck(User user) throws SQLException {
+        boolean result;
+        String query = "select id_user from waifus.users where email=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getEmail());
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean nicknameCheck(User user) throws SQLException {
+        boolean result;
+        String query = "select id_user from waifus.users where nickname=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getNickname());
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()){
+            return false;
+        }
+        return true;
+    }
+
+    public int getId(User user) throws SQLException {
+        int result = 0;
+        String query = "select id_user from waifus.users where email=?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, user.getEmail());
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()){
+            result = rs.getInt("id_user");
         }
         return result;
     }

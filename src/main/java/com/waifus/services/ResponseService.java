@@ -85,8 +85,12 @@ public class ResponseService<G> {
         return json.toString();
     }
 
+    /**
+     * Metodo que genera un String en caso de que el usuario no este logeado y lo retorna junto con el status
+     * @param response
+     */
     public void notLoggedResponse(HttpServletResponse response){
-        String error = errorResponse(prop.getProperty("resp.notLogged"));
+        String error = errorResponse(prop.getProperty("error.notLogged"));
         outputResponse(response, error,401);
     }
 }
