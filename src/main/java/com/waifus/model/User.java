@@ -27,9 +27,6 @@ public class User {
     private boolean banned;
     private String repPass;
 
-    /**
-     * Constructor vacio
-     */
     public User() {
     }
 
@@ -43,13 +40,6 @@ public class User {
         this.password = password;
     }
 
-    /**
-     * Constructor que se utiliza en el login
-     * @param idUser
-     * @param email
-     * @param activated
-     * @param banned
-     */
     public User(int idUser, String email, boolean activated, boolean banned) {
         this.idUser = idUser;
         this.email = email;
@@ -57,22 +47,6 @@ public class User {
         this.banned = banned;
     }
 
-    /**
-     * Contructor empleado en el perfil
-     * @param idUser
-     * @param gender
-     * @param adultContent
-     * @param nickname
-     * @param admin
-     * @param name
-     * @param email
-     * @param birthday
-     * @param profilePhoto
-     * @param country
-     * @param description
-     * @param karma
-     * @param theme
-     */
     public User(int idUser, String gender, boolean adultContent, String nickname, boolean admin, String name, String email, String birthday, String profilePhoto, String country, String description, int karma, String theme) {
         this.idUser = idUser;
         this.gender = gender;
@@ -116,10 +90,6 @@ public class User {
         this.password = password;
     }
 
-    /**
-     * Contructor para establezer conexion con la BD
-     * @param idUser
-     */
     public User(int idUser) {
         this.idUser = idUser;
     }
@@ -298,9 +268,5 @@ public class User {
 
     public boolean nicknameCheck() throws SQLException, ClassNotFoundException {
         return UserDaoImp.getInstance().nicknameCheck(this);
-    }
-
-    public int getId() throws SQLException, ClassNotFoundException {
-        return UserDaoImp.getInstance().getId(this);
     }
 }

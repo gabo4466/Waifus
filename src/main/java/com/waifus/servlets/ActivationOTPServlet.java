@@ -1,6 +1,5 @@
 package com.waifus.servlets;
 
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -62,9 +61,9 @@ public class ActivationOTPServlet extends HttpServlet {
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
             user = user.get();
-            Claim codeSent = decodedJWT.getClaim("OTP");
+            String codeSent = String.valueOf(decodedJWT.getClaim("OTP"));
             String codeRec = req.getParameter("codeRec");
-            if(codeRec.equals(codeSent.asString())){
+            if(codeRec.equals(codeSent)){
                 user.setActivated(true);
                 user.update();
                 JsonObject json = new JsonObject();
@@ -75,7 +74,7 @@ public class ActivationOTPServlet extends HttpServlet {
                 JsonObject json = new JsonObject();
                 json.add("result", new JsonPrimitive("ko"));
                 json.add("user", new Gson().toJsonTree(user));
-                responseService.outputResponse(resp, json.toString(), 202);
+                responseService.outputResponse(resp, json.toString(), 400);
             }
         }catch (Exception e){
             System.out.println(prop.getProperty("error.generic"));

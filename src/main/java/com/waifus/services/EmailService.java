@@ -38,7 +38,7 @@ public class EmailService {
         String result = "";
         Random random = new Random();
         for (int i=0; i<6; i++){
-            result += random.nextInt(9);
+            result += ""+random.nextInt(9);
         }
         return result;
     }
