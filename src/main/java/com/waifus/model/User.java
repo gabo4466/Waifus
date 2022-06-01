@@ -289,7 +289,15 @@ public class User {
     }
 
     public boolean update() throws SQLException, ClassNotFoundException, UserException {
-        return  UserDaoImp.getInstance().update(this);
+        return UserDaoImp.getInstance().update(this);
+    }
+
+    public boolean emailCheck() throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().emailCheck(this);
+    }
+
+    public boolean nicknameCheck() throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().nicknameCheck(this);
     }
 
     public int getId() throws SQLException, ClassNotFoundException {
