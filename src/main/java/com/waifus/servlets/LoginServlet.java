@@ -41,7 +41,6 @@ public class LoginServlet extends HttpServlet {
         user.setPassword(responseService.toHash(user.getPassword()));
         User userLogged = null;
         try {
-            user.setIdUser(user.getId());
             userLogged = user.logIn();
             String jwt = JWTService.createJWT(userLogged);
             JsonObject json = new JsonObject();
