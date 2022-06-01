@@ -34,7 +34,7 @@ public class JWTService {
     }
 
     public static String createJWTOTP(User user, String otp) throws JWTCreationException {
-        long expireTime = (new Date().getTime()) + 86400000;
+        long expireTime = (new Date().getTime()) + 6000000;
         Date expireDate = new Date(expireTime);
         return JWT.create()
                 .withClaim("idUser", user.getIdUser())
