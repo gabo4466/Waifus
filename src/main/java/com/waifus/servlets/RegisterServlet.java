@@ -32,7 +32,6 @@ public class RegisterServlet extends HttpServlet {
         User user = new User();
         user.setEmail(req.getParameter("email"));
         user.setNickname(req.getParameter("nickname"));
-        System.out.println("nick "+user.getNickname());
         try{
             boolean email = user.emailCheck();
             boolean nick =  user.nicknameCheck();
