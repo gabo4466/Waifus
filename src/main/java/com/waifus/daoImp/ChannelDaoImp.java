@@ -3,9 +3,7 @@ package com.waifus.daoImp;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.ChannelException;
 import com.waifus.exceptions.ChannelNotFoundException;
-import com.waifus.exceptions.UserException;
 import com.waifus.model.Channel;
-import com.waifus.model.User;
 import com.waifus.services.DBConnection;
 import com.waifus.services.PropertiesService;
 
@@ -33,7 +31,7 @@ public class ChannelDaoImp implements GenericDao<Channel> {
         return instance;
     }
     @Override
-    public boolean update(Channel channel) throws SQLException, UserException {
+    public boolean update(Channel channel) throws SQLException, ChannelException {
         boolean result;
         String query = "update waifus.channels set deleted=?, description=?, photo=?, banner=?, name=? where id_channel=?;";
         PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -48,13 +46,13 @@ public class ChannelDaoImp implements GenericDao<Channel> {
             result = true;
         }else {
             result = false;
-            throw new UserException(prop.getProperty("error.generic"));
+            throw new ChannelException(prop.getProperty("error.generic"));
         }
         return result;
     }
 
     @Override
-    public boolean delete(Channel channel) throws SQLException, UserException {
+    public boolean delete(Channel channel) throws SQLException, ChannelException {
         boolean result;
         String query = "update waifus.channels set deleted=? where id_channel=?;";
         PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -65,7 +63,7 @@ public class ChannelDaoImp implements GenericDao<Channel> {
             result = true;
         }else {
             result = false;
-            throw new UserException(prop.getProperty("error.generic"));
+            throw new ChannelException(prop.getProperty("error.generic"));
         }
         return result;
     }

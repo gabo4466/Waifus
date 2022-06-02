@@ -1,12 +1,8 @@
 package com.waifus.model;
 
-import com.waifus.dao.GenericDao;
 import com.waifus.daoImp.ChannelDaoImp;
-import com.waifus.daoImp.UserDaoImp;
 import com.waifus.exceptions.ChannelException;
 import com.waifus.exceptions.ChannelNotFoundException;
-import com.waifus.exceptions.UserException;
-import com.waifus.exceptions.UserNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -122,11 +118,11 @@ public class Channel {
         return ChannelDaoImp.getInstance().get(this.idChannel);
     }
 
-    public boolean update() throws SQLException, ClassNotFoundException, UserException {
+    public boolean update() throws SQLException, ClassNotFoundException, ChannelException {
         return ChannelDaoImp.getInstance().update(this);
     }
 
-    public boolean delete() throws SQLException, ClassNotFoundException, UserException {
+    public boolean delete() throws SQLException, ClassNotFoundException, ChannelException {
         return ChannelDaoImp.getInstance().delete(this);
     }
 

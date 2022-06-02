@@ -4,12 +4,11 @@ import com.waifus.services.PropertiesService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.Properties;
 
 
-public class SearchServlet extends HttpServlet {
+public class ChannelSearchServlet extends HttpServlet {
     private Properties prop;
 
     @Override
