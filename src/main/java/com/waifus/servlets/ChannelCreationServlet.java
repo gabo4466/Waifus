@@ -33,7 +33,23 @@ public class ChannelCreationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        ResponseService<Channel> responseService = new ResponseService<Channel>();
+        Channel channel = new Channel();
+        channel.setName(req.getParameter("name"));
+        try{
+            boolean name = channel.nameCheck();
+            JsonObject json = new JsonObject();
+            json.add("name", new JsonPrimitive(name));
+            responseService.outputResponse(resp, json.toString(), 200);
+        }catch (SQLException e){
+            System.out.println(prop.getProperty("error.db"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.db")), 400);
+        }catch (Exception e){
+            System.out.println(prop.getProperty("error.generic"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
+        }
     }
 
     @Override

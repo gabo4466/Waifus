@@ -40,6 +40,16 @@ public class Channel {
         this.user = user;
     }
 
+    public Channel(int idChannel, String dateChannel, String description, String photo, String banner, String name, int user) {
+        this.idChannel = idChannel;
+        this.dateChannel = dateChannel;
+        this.description = description;
+        this.photo = photo;
+        this.banner = banner;
+        this.name = name;
+        this.user = user;
+    }
+
     public int getIdChannel() {
         return idChannel;
     }
@@ -110,5 +120,29 @@ public class Channel {
 
     public Channel get() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
         return ChannelDaoImp.getInstance().get(this.idChannel);
+    }
+
+    public boolean update() throws SQLException, ClassNotFoundException, UserException {
+        return ChannelDaoImp.getInstance().update(this);
+    }
+
+    public boolean delete() throws SQLException, ClassNotFoundException, UserException {
+        return ChannelDaoImp.getInstance().delete(this);
+    }
+
+    public ArrayList<Channel> getall() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+        return ChannelDaoImp.getInstance().getAll();
+    }
+
+    public ArrayList<Channel> search(int idx, int pag, String term) throws SQLException, ClassNotFoundException {
+        return ChannelDaoImp.getInstance().search(idx, pag, term);
+    }
+
+    public int count(String term) throws SQLException, ClassNotFoundException {
+        return ChannelDaoImp.getInstance().count(term);
+    }
+
+    public boolean nameCheck() throws SQLException, ClassNotFoundException {
+        return ChannelDaoImp.getInstance().nameCheck(this);
     }
 }

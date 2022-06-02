@@ -52,6 +52,14 @@
     <servlet-name>channelCreation</servlet-name>
     <url-pattern>/channelCreation</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>search</servlet-name>
+    <servlet-class>com.waifus.servlets.SearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
 
 
   <filter>

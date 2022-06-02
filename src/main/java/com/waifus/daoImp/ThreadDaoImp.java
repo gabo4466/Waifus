@@ -23,7 +23,7 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     }
 
     @Override
-    public ArrayList<Thread> getAll(int idx, int pag) {
+    public ArrayList<Thread> getAll() {
         return null;
     }
 
@@ -35,5 +35,10 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     @Override
     public Thread get(int id) {
         return null;
+    }
+
+    @Override
+    public int count(String term) {
+        return 0;
     }
 }
