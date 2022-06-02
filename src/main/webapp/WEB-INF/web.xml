@@ -44,6 +44,14 @@
     <servlet-name>profile</servlet-name>
     <url-pattern>/profile</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>channelCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.ChannelCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>channelCreation</servlet-name>
+    <url-pattern>/channelCreation</url-pattern>
+  </servlet-mapping>
 
 
   <filter>
