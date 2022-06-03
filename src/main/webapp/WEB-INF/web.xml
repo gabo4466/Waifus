@@ -76,6 +76,22 @@
     <servlet-name>multimediaCreation</servlet-name>
     <url-pattern>/multimediaCreation</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>userSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.UserSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>userSearch</servlet-name>
+    <url-pattern>/userSearch</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>threadSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.ThreadSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>threadSearch</servlet-name>
+    <url-pattern>/threadSearch</url-pattern>
+  </servlet-mapping>
 
 
   <filter>

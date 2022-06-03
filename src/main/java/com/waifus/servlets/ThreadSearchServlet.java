@@ -2,21 +2,19 @@ package com.waifus.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.waifus.exceptions.ChannelException;
-import com.waifus.model.Channel;
+import com.waifus.model.Thread;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-
-public class ChannelSearchServlet extends HttpServlet {
+public class ThreadSearchServlet extends HttpServlet {
     private Properties prop;
 
     @Override
@@ -28,16 +26,16 @@ public class ChannelSearchServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResponseService<Channel> responseService = new ResponseService<Channel>();
-        Channel channel = new Channel();
-        ArrayList<Channel> channels= new ArrayList<Channel>();
+        ResponseService<Thread> responseService = new ResponseService<Thread>();
+        Thread thread = new Thread();
+        ArrayList<Thread> threads= new ArrayList<Thread>();
         int idx = Integer.parseInt(req.getParameter("idx"));
         int pag = Integer.parseInt(req.getParameter("pag"));
         String term = req.getParameter("term");
         try {
-            channels = channel.search(idx, pag, term);
+            threads = thread.search(idx, pag, term);
             JsonObject json = new JsonObject();
-            json.add("channels", new Gson().toJsonTree(channels));
+            json.add("threads", new Gson().toJsonTree(threads));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("error.db"));
