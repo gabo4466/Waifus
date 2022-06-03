@@ -7,6 +7,7 @@ import com.waifus.exceptions.UserNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class User {
     private int idUser;
@@ -107,6 +108,17 @@ public class User {
         this.activated = activated;
         this.banned = banned;
         this.repPass = repPass;
+    }
+
+    public User(int idUser, String gender, String nickname, String name, String profilePhoto, String country, String description, int karma) {
+        this.idUser = idUser;
+        this.gender = gender;
+        this.nickname = nickname;
+        this.name = name;
+        this.profilePhoto = profilePhoto;
+        this.country = country;
+        this.description = description;
+        this.karma = karma;
     }
 
     public User(String nickname, String name, String email, String password) {
@@ -302,5 +314,21 @@ public class User {
 
     public int getId() throws SQLException, ClassNotFoundException {
         return UserDaoImp.getInstance().getId(this);
+    }
+
+    public boolean delete() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().delete(this);
+    }
+
+    public ArrayList<User> getAll() throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().getAll();
+    }
+
+    public ArrayList<User> search(int idx, int pag, String term) throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().search(idx, pag, term);
+    }
+
+    public int count(String term) throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().count(term);
     }
 }
