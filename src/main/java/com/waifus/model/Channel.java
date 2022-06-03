@@ -126,7 +126,7 @@ public class Channel {
         return ChannelDaoImp.getInstance().delete(this);
     }
 
-    public ArrayList<Channel> getall() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+    public ArrayList<Channel> getall() throws SQLException, ClassNotFoundException {
         return ChannelDaoImp.getInstance().getAll();
     }
 

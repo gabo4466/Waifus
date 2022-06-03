@@ -4,22 +4,20 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.waifus.exceptions.ChannelException;
-import com.waifus.model.Channel;
+import com.waifus.exceptions.ThreadException;
 import com.waifus.services.JWTService;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
+import com.waifus.model.Thread;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ChannelCreationServlet extends HttpServlet {
+public class ThreadCreationServlet extends HttpServlet {
     private Properties prop;
 
     @Override
@@ -31,39 +29,23 @@ public class ChannelCreationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResponseService<Channel> responseService = new ResponseService<Channel>();
-        Channel channel = new Channel();
-        channel.setName(req.getParameter("name"));
-        try{
-            boolean name = channel.nameCheck();
-            JsonObject json = new JsonObject();
-            json.add("name", new JsonPrimitive(name));
-            responseService.outputResponse(resp, json.toString(), 200);
-        }catch (SQLException e){
-            System.out.println(prop.getProperty("error.db"));
-            System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.db")), 400);
-        }catch (Exception e){
-            System.out.println(prop.getProperty("error.generic"));
-            System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
-        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String jwt = req.getHeader("Authorization");
-        ResponseService<Channel> responseService = new ResponseService<Channel>();
-        Channel channel = new Gson().fromJson(req.getReader(), Channel.class);
+        ResponseService<Thread> responseService = new ResponseService<Thread>();
+        Thread thread = new Gson().fromJson(req.getReader(), Thread.class);
         try{
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
-            channel.setUser(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
-            channel=channel.add();
+            thread.setUser(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
+            thread=thread.add();
             JsonObject json = new JsonObject();
             json.add("added", new JsonPrimitive("ok"));
-            json.add("channel", new Gson().toJsonTree(channel));
+            json.add("thread", new Gson().toJsonTree(thread));
             responseService.outputResponse(resp, json.toString(), 200);
-        }catch (ChannelException e){
+        }catch (ThreadException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
         }catch (SQLException e){

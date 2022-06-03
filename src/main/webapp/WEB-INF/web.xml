@@ -60,6 +60,22 @@
     <servlet-name>channelSearch</servlet-name>
     <url-pattern>/channelSearch</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>threadCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.ThreadCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>threadCreation</servlet-name>
+    <url-pattern>/threadCreation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>multimediaCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.MultimediaCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>multimediaCreation</servlet-name>
+    <url-pattern>/multimediaCreation</url-pattern>
+  </servlet-mapping>
 
 
   <filter>

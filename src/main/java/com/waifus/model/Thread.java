@@ -1,6 +1,8 @@
 package com.waifus.model;
 
 import com.waifus.daoImp.ThreadDaoImp;
+import com.waifus.exceptions.ThreadException;
+import com.waifus.exceptions.ThreadNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -93,22 +95,22 @@ public class Thread {
         this.channel = channel;
     }
 
-    /*public Thread add() throws SQLException, ClassNotFoundException, ChannelException, IOException, ChannelNotFoundException {
-        return ThreadDaoImp.getInstance().add();
+    public Thread add() throws SQLException, ClassNotFoundException, IOException, ThreadNotFoundException, ThreadException {
+        return ThreadDaoImp.getInstance().add(this);
     }
-    public Thread get() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+    public Thread get() throws SQLException, ClassNotFoundException, ThreadNotFoundException {
         return ThreadDaoImp.getInstance().get(this.idThread);
     }
 
-    public boolean update() throws SQLException, ClassNotFoundException, UserException {
+    public boolean update() throws SQLException, ClassNotFoundException, ThreadException {
         return ThreadDaoImp.getInstance().update(this);
     }
 
-    public boolean delete() throws SQLException, ClassNotFoundException, UserException {
+    public boolean delete() throws SQLException, ClassNotFoundException, ThreadException {
         return ThreadDaoImp.getInstance().delete(this);
     }
 
-    public ArrayList<Thread> getall() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+    public ArrayList<Thread> getall() throws SQLException, ClassNotFoundException {
         return ThreadDaoImp.getInstance().getAll();
     }
 
@@ -118,5 +120,5 @@ public class Thread {
 
     public int count(String term) throws SQLException, ClassNotFoundException {
         return ThreadDaoImp.getInstance().count(term);
-    }*/
+    }
 }
