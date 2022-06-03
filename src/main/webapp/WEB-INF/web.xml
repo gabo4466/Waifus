@@ -92,6 +92,14 @@
     <servlet-name>threadSearch</servlet-name>
     <url-pattern>/threadSearch</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>mainPhotoChannel</servlet-name>
+    <servlet-class>com.waifus.servlets.MainPhotoChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mainPhotoChannel</servlet-name>
+    <url-pattern>/mainPhotoChannel</url-pattern>
+  </servlet-mapping>
 
 
   <filter>
