@@ -64,4 +64,8 @@ public class Multimedia {
     public ArrayList<Multimedia> getall() throws SQLException, ClassNotFoundException {
         return MultimediaDaoImp.getInstance().getAll();
     }
+
+    public ArrayList<Multimedia> search(int id) throws SQLException, ClassNotFoundException {
+        return MultimediaDaoImp.getInstance().searchMultimedia(id);
+    }
 }

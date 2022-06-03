@@ -67,34 +67,25 @@ public class MultimediaDaoImp implements GenericDao<Multimedia> {
     @Override
     public Multimedia add(Multimedia multimedia) throws MultimediaException, SQLException, MultimediaNotFoundException {
         Multimedia result;
-        String query = "select id_multimedia from waifus.multimedia where directory=?";
+        String query = "insert into waifus.multimedia (directory, fk_thread) values (?,?);";
         PreparedStatement stmt = this.connection.prepareStatement(query);
         stmt.setString(1, multimedia.getDirectory());
-        ResultSet rs = stmt.executeQuery();
-        if (!rs.next()){
-            query = "insert into waifus.multimedia (directory, fk_thread) values (?,?);";
-            PreparedStatement stmt2 = this.connection.prepareStatement(query);
-            stmt2.setString(1, multimedia.getDirectory());
-            stmt2.setInt(2, multimedia.getThread());
-            int rs2 = stmt2.executeUpdate();
-            if (rs2>0){
-                query = "select id_multimedia from waifus.multimedia where directory=?;";
-                stmt = this.connection.prepareStatement(query);
-                stmt.setString(1, multimedia.getDirectory());
-                rs = stmt.executeQuery();
-                if (rs.next()){
-                    result = this.get(rs.getInt("id_multimedia"));
-                }else {
-                    result = null;
-                    throw new MultimediaException(prop.getProperty("error.generic"));
-                }
+        stmt.setInt(2, multimedia.getThread());
+        int rs = stmt.executeUpdate();
+        if (rs>0){
+            query = "select id_multimedia from waifus.multimedia where directory=?;";
+            stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, multimedia.getDirectory());
+            ResultSet rs2 = stmt.executeQuery();
+            if (rs2.next()){
+                result = this.get(rs2.getInt("id_multimedia"));
             }else {
                 result = null;
                 throw new MultimediaException(prop.getProperty("error.generic"));
             }
         }else {
             result = null;
-            throw new MultimediaException(prop.getProperty("error.existingMultimedia"));
+            throw new MultimediaException(prop.getProperty("error.generic"));
         }
         return result;
     }
@@ -137,5 +128,18 @@ public class MultimediaDaoImp implements GenericDao<Multimedia> {
     @Override
     public int count(String term) throws SQLException {
         return 0;
+    }
+
+    public ArrayList<Multimedia> searchMultimedia(int id) throws SQLException {
+        ArrayList<Multimedia> result = new ArrayList<Multimedia>();
+        String query = "select id_multimedia, directory, fk_thread from waifus.multimedia where fk_thread=?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            result.add(new Multimedia(rs.getInt("id_multimedia"), rs.getString("directory"),
+                    rs.getInt("fk_thread")));
+        }
+        return result;
     }
 }
