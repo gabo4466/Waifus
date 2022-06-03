@@ -44,6 +44,62 @@
     <servlet-name>profile</servlet-name>
     <url-pattern>/profile</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>channelCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.ChannelCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>channelCreation</servlet-name>
+    <url-pattern>/channelCreation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>channelSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.ChannelSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>channelSearch</servlet-name>
+    <url-pattern>/channelSearch</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>threadCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.ThreadCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>threadCreation</servlet-name>
+    <url-pattern>/threadCreation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>multimediaCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.MultimediaCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>multimediaCreation</servlet-name>
+    <url-pattern>/multimediaCreation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>userSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.UserSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>userSearch</servlet-name>
+    <url-pattern>/userSearch</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>threadSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.ThreadSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>threadSearch</servlet-name>
+    <url-pattern>/threadSearch</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>mainPhotoChannel</servlet-name>
+    <servlet-class>com.waifus.servlets.MainPhotoChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mainPhotoChannel</servlet-name>
+    <url-pattern>/mainPhotoChannel</url-pattern>
+  </servlet-mapping>
 
 
   <filter>
