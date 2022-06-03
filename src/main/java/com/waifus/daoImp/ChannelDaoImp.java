@@ -108,7 +108,7 @@ public class ChannelDaoImp implements GenericDao<Channel> {
     }
 
     @Override
-    public ArrayList<Channel> getAll() throws SQLException, ChannelNotFoundException {
+    public ArrayList<Channel> getAll() throws SQLException {
         ArrayList<Channel> result = new ArrayList<Channel>();
         String query = "select id_channel, date_channel, photo, banner, name, description, deleted, fk_user from waifus.channels;";
         PreparedStatement stmt = this.connection.prepareStatement(query);

@@ -1,6 +1,12 @@
 package com.waifus.model;
 
-import java.util.PriorityQueue;
+import com.waifus.daoImp.MultimediaDaoImp;
+import com.waifus.exceptions.MultimediaException;
+import com.waifus.exceptions.MultimediaNotFoundException;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Multimedia {
     private int idMultimedia;
@@ -40,30 +46,22 @@ public class Multimedia {
         this.thread = thread;
     }
 
-    /*public Multimedia add() throws SQLException, ClassNotFoundException, ChannelException, IOException, ChannelNotFoundException {
-        return MultimediaDaoImp.getInstance().add();
+    public Multimedia add() throws SQLException, ClassNotFoundException, MultimediaException, IOException, MultimediaNotFoundException {
+        return MultimediaDaoImp.getInstance().add(this);
     }
-    public Multimedia get() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+    public Multimedia get() throws SQLException, ClassNotFoundException, MultimediaNotFoundException {
         return MultimediaDaoImp.getInstance().get(this.idMultimedia);
     }
 
-    public boolean update() throws SQLException, ClassNotFoundException, UserException {
+    public boolean update() throws SQLException, ClassNotFoundException, MultimediaException {
         return MultimediaDaoImp.getInstance().update(this);
     }
 
-    public boolean delete() throws SQLException, ClassNotFoundException, UserException {
+    public boolean delete() throws SQLException, ClassNotFoundException, MultimediaException {
         return MultimediaDaoImp.getInstance().delete(this);
     }
 
-    public ArrayList<Multimedia> getall() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+    public ArrayList<Multimedia> getall() throws SQLException, ClassNotFoundException {
         return MultimediaDaoImp.getInstance().getAll();
     }
-
-    public ArrayList<Multimedia> search(int idx, int pag, String term) throws SQLException, ClassNotFoundException {
-        return MultimediaDaoImp.getInstance().search(idx, pag, term);
-    }
-
-    public int count(String term) throws SQLException, ClassNotFoundException {
-        return MultimediaDaoImp.getInstance().count(term);
-    }*/
 }

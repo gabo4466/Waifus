@@ -1,8 +1,8 @@
 package com.waifus.daoImp;
 
 import com.waifus.dao.GenericDao;
+import com.waifus.exceptions.ThreadException;
 import com.waifus.exceptions.ThreadNotFoundException;
-import com.waifus.model.Channel;
 import com.waifus.services.DBConnection;
 import com.waifus.services.PropertiesService;
 import com.waifus.model.Thread;
@@ -32,23 +32,84 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     }
 
     @Override
-    public boolean update(Thread thread) {
-        return false;
+    public boolean update(Thread thread) throws SQLException, ThreadException {
+        boolean result;
+        String query = "update waifus.threads set deleted=?, content=?, name=? where id_thread=?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setBoolean(1, thread.isDeleted());
+        stmt.setString(2, thread.getContent());
+        stmt.setString(5, thread.getName());
+        stmt.setInt(6, thread.getIdThread());
+        int rs = stmt.executeUpdate();
+        if(rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new ThreadException(prop.getProperty("error.generic"));
+        }
+        return result;
     }
 
     @Override
-    public boolean delete(Thread thread) {
-        return false;
+    public boolean delete(Thread thread) throws SQLException, ThreadException {
+        boolean result;
+        String query = "update waifus.threads set deleted=? where id_thread=?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setBoolean(1, thread.isDeleted());
+        stmt.setInt(2, thread.getIdThread());
+        int rs = stmt.executeUpdate();
+        if(rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new ThreadException(prop.getProperty("error.generic"));
+        }
+        return result;
     }
 
     @Override
-    public Thread add(Thread thread) {
-        return null;
+    public Thread add(Thread thread) throws ThreadException, SQLException, ThreadNotFoundException {
+        Thread result;
+        String query = "insert into waifus.threads (content, fk_channel, name, date_thread, fk_user, deleted) values (?,?,?,?,?,0);";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setString(1, thread.getContent());
+        stmt.setInt(2, thread.getChannel());
+        stmt.setString(3, thread.getName());
+        stmt.setString(4, thread.getDateThread());
+        stmt.setInt(5, thread.getUser());
+        int rs = stmt.executeUpdate();
+        if (rs>0){
+            query = "select id_thread from waifus.threads where name=? and fk_channel=? and fk_user=? and deleted=0;";
+            stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, thread.getName());
+            stmt.setInt(2, thread.getChannel());
+            stmt.setInt(3, thread.getUser());
+            ResultSet rs2 = stmt.executeQuery();
+            if (rs2.next()){
+                result = this.get(rs2.getInt("id_thread"));
+            }else {
+                result = null;
+                throw new ThreadException(prop.getProperty("error.generic"));
+            }
+        }else {
+            result = null;
+            throw new ThreadException(prop.getProperty("error.generic"));
+        }
+        return result;
     }
 
     @Override
-    public ArrayList<Thread> getAll() {
-        return null;
+    public ArrayList<Thread> getAll() throws SQLException {
+        ArrayList<Thread> result = new ArrayList<Thread>();
+        String query = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            result.add(new Thread(rs.getInt("id_thread"), rs.getString("date_thread"),
+                    rs.getString("name"), rs.getString("content"),
+                    rs.getInt("fk_user"), rs.getInt("fk_channel")));
+        }
+        return result;
     }
 
     @Override
