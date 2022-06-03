@@ -57,12 +57,19 @@ public class ChannelCreationServlet extends HttpServlet {
         Channel channel = new Gson().fromJson(req.getReader(), Channel.class);
         try{
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
-            channel.setUser(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
-            channel=channel.add();
             JsonObject json = new JsonObject();
-            json.add("added", new JsonPrimitive("ok"));
-            json.add("channel", new Gson().toJsonTree(channel));
-            responseService.outputResponse(resp, json.toString(), 200);
+            json.add("added", new JsonPrimitive("ko"));
+            channel.setUser(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
+            if (Boolean.parseBoolean(String.valueOf(decodedJWT.getClaim("admin")))){
+                channel=channel.add();
+                json.add("added", new JsonPrimitive("ok"));
+                json.add("channel", new Gson().toJsonTree(channel));
+                responseService.outputResponse(resp, json.toString(), 200);
+            }else{
+                json.add("added", new JsonPrimitive("ko"));
+                json.add("error", new JsonPrimitive(prop.getProperty("error.noPermit")));
+                responseService.outputResponse(resp, json.toString(), 401);
+            }
         }catch (ChannelException e){
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 400);
