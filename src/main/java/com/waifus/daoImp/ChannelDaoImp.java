@@ -76,14 +76,12 @@ public class ChannelDaoImp implements GenericDao<Channel> {
         stmt.setString(1, channel.getName());
         ResultSet rs = stmt.executeQuery();
         if (!rs.next()){
-            query = "insert into waifus.channels (description, photo, banner, name, date_channel, fk_user, deleted) values (?,?,?,?,?,?,0);";
+            query = "insert into waifus.channels (description, name, date_channel, fk_user, deleted, banner, photo) values (?,?,?,?,0, '', '');";
             PreparedStatement stmt2 = this.connection.prepareStatement(query);
             stmt2.setString(1, channel.getDescription());
-            stmt2.setString(2, channel.getPhoto());
-            stmt2.setString(3, channel.getBanner());
-            stmt2.setString(4, channel.getName());
-            stmt2.setString(5, channel.getDateChannel());
-            stmt2.setInt(6, channel.getUser());
+            stmt2.setString(2, channel.getName());
+            stmt2.setString(3, channel.getDateChannel());
+            stmt2.setInt(4, channel.getUser());
             int rs2 = stmt2.executeUpdate();
             if (rs2>0){
                 query = "select id_channel from waifus.channels where name=? and deleted=0;";
