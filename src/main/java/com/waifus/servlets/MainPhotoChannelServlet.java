@@ -32,11 +32,8 @@ public class MainPhotoChannelServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Part filePart = request.getPart("photo");
         Timestamp ts = Timestamp.from(Instant.now());
         String fileName = ts.toString().replace("-","").replace(".","").replace(":","").replace(" ","") + ".png";
-        System.out.println(fileName);
-        System.out.println("HOLA");
         for (Part part : request.getParts()) {
             part.write(propHidden.getProperty("images.directory")+fileName);
         }
