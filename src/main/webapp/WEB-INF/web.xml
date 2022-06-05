@@ -98,7 +98,15 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>mainPhotoChannel</servlet-name>
-    <url-pattern>/mainPhotoChannel/*</url-pattern>
+    <url-pattern>/mainPhotoChannel</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>images</servlet-name>
+    <servlet-class>com.waifus.servlets.ImagesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>images</servlet-name>
+    <url-pattern>/images/*</url-pattern>
   </servlet-mapping>
 
 
