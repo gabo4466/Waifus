@@ -98,7 +98,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>mainPhotoChannel</servlet-name>
-    <url-pattern>/mainPhotoChannel</url-pattern>
+    <url-pattern>/mainPhotoChannel/*</url-pattern>
   </servlet-mapping>
 
 
