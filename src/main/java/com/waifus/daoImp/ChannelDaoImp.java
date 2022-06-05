@@ -155,8 +155,8 @@ public class ChannelDaoImp implements GenericDao<Channel> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             result = new Channel(rs.getInt("id_channel"), rs.getString("date_channel"),
-                    rs.getString("photo"),rs.getString("banner"),
-                    rs.getString("name"),rs.getString("description"),
+                    rs.getString("description"),rs.getString("photo"),
+                    rs.getString("banner"),rs.getString("name"),
                     rs.getBoolean("deleted"), rs.getInt("fk_user"));
         }else{
             result = null;

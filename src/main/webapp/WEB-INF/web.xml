@@ -101,6 +101,14 @@
     <url-pattern>/mainPhotoChannel</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>bannerChannel</servlet-name>
+    <servlet-class>com.waifus.servlets.BannerChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bannerChannel</servlet-name>
+    <url-pattern>/bannerChannel</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>images</servlet-name>
     <servlet-class>com.waifus.servlets.ImagesServlet</servlet-class>
   </servlet>
