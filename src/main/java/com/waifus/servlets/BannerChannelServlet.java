@@ -1,6 +1,5 @@
 package com.waifus.servlets;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.waifus.model.Channel;
 import com.waifus.model.User;
 import com.waifus.services.JWTService;
@@ -10,11 +9,7 @@ import com.waifus.services.ResponseService;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Properties;
@@ -24,7 +19,7 @@ import java.util.Properties;
         maxFileSize = 1024 * 1024 * 10,      // 10 MB
         maxRequestSize = 1024 * 1024 * 100   // 100 MB
 )
-public class MainPhotoChannelServlet extends HttpServlet {
+public class BannerChannelServlet extends HttpServlet {
 
     private Properties propHidden;
     private Properties prop;
@@ -37,8 +32,7 @@ public class MainPhotoChannelServlet extends HttpServlet {
         this.prop = PropertiesService.getProperties("config_es");
     }
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 
@@ -57,14 +51,12 @@ public class MainPhotoChannelServlet extends HttpServlet {
             for (Part part : req.getParts()) {
                 part.write(propHidden.getProperty("images.directory")+fileName);
             }
-            channel.setPhoto(fileName);
+            channel.setBanner(fileName);
             channel.update();
         }catch (Exception e){
             System.out.println(prop.getProperty("error.generic"));
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
-
     }
-
 }
