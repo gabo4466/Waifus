@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Properties;
 
 @MultipartConfig(
@@ -37,7 +38,26 @@ public class MultimediaCreationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        ResponseService<Multimedia> responseService = new ResponseService<Multimedia>();
+        String jwt = req.getHeader("Authorization");
+        int idThread = Integer.parseInt(req.getHeader("idThread"));
+        try {
+            Multimedia multimedia = new Multimedia();
+            ArrayList<Multimedia> multimediaArray = new ArrayList<Multimedia>();
+            JWTService.verifyJWT(jwt);
+            multimediaArray = multimedia.search(idThread);
+            JsonObject json = new JsonObject();
+            json.add("multimediaArray", new Gson().toJsonTree(multimediaArray));
+            responseService.outputResponse(resp, json.toString(), 200);
+        }catch (SQLException e){
+            System.out.println(prop.getProperty("error.db"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.db")), 400);
+        }catch (Exception e){
+            System.out.println(prop.getProperty("error.generic"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
+        }
     }
 
     @Override
