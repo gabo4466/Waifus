@@ -38,7 +38,7 @@ public class BannerChannelServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResponseService<User> responseService = new ResponseService<User>();
+        ResponseService<Channel> responseService = new ResponseService<Channel>();
         String jwt = req.getHeader("Authorization");
         int idChannel = Integer.parseInt(req.getHeader("idChannel"));
         try{
