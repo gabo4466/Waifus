@@ -40,6 +40,7 @@ public class ThreadCreationServlet extends HttpServlet {
         try{
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             thread.setUser(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
+            thread.setChannel(Integer.parseInt(req.getParameter("idChannel")));
             thread=thread.add();
             JsonObject json = new JsonObject();
             json.add("added", new JsonPrimitive("ok"));

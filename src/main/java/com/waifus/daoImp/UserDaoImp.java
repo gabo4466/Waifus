@@ -100,7 +100,7 @@ public class UserDaoImp implements GenericDao<User> {
         stmt.setString(2, user.getNickname());
         ResultSet rs = stmt.executeQuery();
         if (!rs.next()){
-            query = "insert into waifus.users (email, nickname, name, password, birthday, adult_content, admin, activated, banned, karma) values (?,?,?,?,?,?,0,0,0,0);";
+            query = "insert into waifus.users (email, nickname, name, password, birthday, adult_content, admin, activated, banned, karma, profile_photo) values (?,?,?,?,?,?,0,0,0,0,'profileDefault.png');";
             PreparedStatement stmt2 = this.connection.prepareStatement(query);
             stmt2.setString(1, user.getEmail());
             stmt2.setString(2, user.getNickname());
