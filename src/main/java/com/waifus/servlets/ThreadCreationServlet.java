@@ -35,9 +35,8 @@ public class ThreadCreationServlet extends HttpServlet {
             Thread thread = new Thread();
             thread.setIdThread(idThread);
             thread = thread.get();
-            JsonObject json = new JsonObject();
-            json.add("thread", new Gson().toJsonTree(thread));
-            responseService.outputResponse(resp, json.toString(), 200);
+            String json = responseService.toJson(thread);
+            responseService.outputResponse(resp, json, 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("error.db"));
             System.out.println(e.getMessage());
