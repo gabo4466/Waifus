@@ -36,8 +36,10 @@ public class ChannelSearchServlet extends HttpServlet {
         String term = req.getParameter("term");
         try {
             channels = channel.search(idx, pag, term);
+            int count = channel.count(term);
             JsonObject json = new JsonObject();
             json.add("channels", new Gson().toJsonTree(channels));
+            json.add("count", new JsonPrimitive(count));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("error.db"));

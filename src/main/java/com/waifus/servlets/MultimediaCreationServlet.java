@@ -40,7 +40,7 @@ public class MultimediaCreationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<Multimedia> responseService = new ResponseService<Multimedia>();
         String jwt = req.getHeader("Authorization");
-        int idThread = Integer.parseInt(req.getHeader("idThread"));
+        int idThread = Integer.parseInt(req.getParameter("idThread"));
         try {
             Multimedia multimedia = new Multimedia();
             ArrayList<Multimedia> multimediaArray = new ArrayList<Multimedia>();

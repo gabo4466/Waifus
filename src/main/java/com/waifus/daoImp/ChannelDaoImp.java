@@ -123,24 +123,25 @@ public class ChannelDaoImp implements GenericDao<Channel> {
     @Override
     public ArrayList<Channel> search(int idx, int pag, String term) throws SQLException {
         ArrayList<Channel> result = new ArrayList<Channel>();
+        idx -= 1;
         PreparedStatement stmt;
         String queryNoTerm = "select id_channel, date_channel, photo, banner, name, description, fk_user from waifus.channels where deleted=0 limit ?,?;";
-        String queryTerm = "select id_channel, date_channel, photo, banner, name, description, fk_user from waifus.channels where name like '%'+?+'%' and deleted=0 limit ?,?;";
+        String queryTerm = "select id_channel, date_channel, photo, banner, name, description, fk_user from waifus.channels where name like ? and deleted=0 limit ?,?;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
             stmt.setInt(1, idx);
-            stmt.setInt(2, idx+pag);
+            stmt.setInt(2, pag);
         }else {
             stmt = this.connection.prepareStatement(queryTerm);
-            stmt.setString(1, term);
+            stmt.setString(1, "%"+term+"%");
             stmt.setInt(2, idx);
-            stmt.setInt(3, idx+pag);
+            stmt.setInt(3, pag);
         }
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             result.add(new Channel(rs.getInt("id_channel"), rs.getString("date_channel"),
-                    rs.getString("photo"), rs.getString("banner"),
-                    rs.getString("name"), rs.getString("description"),
+                    rs.getString("description"), rs.getString("photo"),
+                    rs.getString("banner"), rs.getString("name"),
                     rs.getInt("fk_user")));
         }
         return result;
@@ -170,12 +171,12 @@ public class ChannelDaoImp implements GenericDao<Channel> {
         int result = 0;
         PreparedStatement stmt;
         String queryNoTerm = "select count(*) as Quantity from waifus.channels where deleted=0;";
-        String queryTerm = "select count(*) as Quantity from waifus.channels where name like '%'+?+'%' and deleted=0;";
+        String queryTerm = "select count(*) as Quantity from waifus.channels where name like ? and deleted=0;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
         }else {
             stmt = this.connection.prepareStatement(queryTerm);
-            stmt.setString(1, term);
+            stmt.setString(1, "%" + term + "%");
         }
         ResultSet rs = stmt.executeQuery();
         if(rs.next()){
