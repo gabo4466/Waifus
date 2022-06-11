@@ -116,6 +116,15 @@
     <servlet-name>images</servlet-name>
     <url-pattern>/images/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>channel</servlet-name>
+    <servlet-class>com.waifus.servlets.ChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>channel</servlet-name>
+    <url-pattern>/channel</url-pattern>
+  </servlet-mapping>
+
 
 
   <filter>
