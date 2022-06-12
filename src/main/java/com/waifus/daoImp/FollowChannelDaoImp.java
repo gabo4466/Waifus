@@ -70,7 +70,9 @@ public class FollowChannelDaoImp implements GenericDao<FollowChannel> {
             if (rss == 0){
                 throw new SQLException(prop.getProperty("error.db"));
             }
+
         }
+
         return null;
     }
 
@@ -93,4 +95,16 @@ public class FollowChannelDaoImp implements GenericDao<FollowChannel> {
     public int count(String term) throws SQLException {
         return 0;
     }
+
+    public void follows(FollowChannel obj) throws FollowChannelException, SQLException {
+        String query = "select date_follows from waifus.users_follows_channels where id_channel = ? and id_user = ?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, obj.getIdUser());
+        stmt.setInt(2, obj.getIdChannel());
+        ResultSet rs = stmt.executeQuery();
+        if (!rs.next()){
+            throw new FollowChannelException(prop.getProperty("error.follow"));
+        }
+    }
+
 }

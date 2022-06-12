@@ -33,6 +33,26 @@ public class FollowChannelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<FollowChannel> responseService = new ResponseService<FollowChannel>();
+        int idChannel = Integer.parseInt(req.getParameter("idChannel"));
+        String jwt = req.getHeader("Authorization");
+        JsonObject json = new JsonObject();
+        try {
+            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
+            FollowChannel followChannel = new FollowChannel(idChannel, Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
+            followChannel.follows();
+            json.add("follow",new JsonPrimitive(true));
+            responseService.outputResponse(resp,json.toString(),200);
+        }catch (FollowChannelException ex) {
+            json.add("follow",new JsonPrimitive(false));
+            responseService.outputResponse(resp,json.toString(),200);
+        } catch (Exception ex) {
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ResponseService<FollowChannel> responseService = new ResponseService<FollowChannel>();
         String jwt = req.getHeader("Authorization");
         int idChannel = Integer.parseInt(req.getParameter("idChannel"));
         String dateFollow = req.getParameter("dateFollow");
@@ -66,12 +86,6 @@ public class FollowChannelServlet extends HttpServlet {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 
     }
 }

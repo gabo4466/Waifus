@@ -16,6 +16,11 @@ public class FollowChannel {
         this.dateFollow = dateFollow;
     }
 
+    public FollowChannel(int idChannel, int idUser) {
+        this.idChannel = idChannel;
+        this.idUser = idUser;
+    }
+
     public int getIdChannel() {
         return idChannel;
     }
@@ -47,4 +52,9 @@ public class FollowChannel {
     public void delete() throws SQLException, ClassNotFoundException, FollowChannelException {
         FollowChannelDaoImp.getInstance().delete(this);
     }
+
+    public void follows() throws SQLException, ClassNotFoundException, FollowChannelException {
+        FollowChannelDaoImp.getInstance().follows(this);
+    }
+
 }
