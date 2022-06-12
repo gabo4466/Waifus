@@ -124,6 +124,14 @@
     <servlet-name>channel</servlet-name>
     <url-pattern>/channel</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>commentCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.CommentCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>commentCreation</servlet-name>
+    <url-pattern>/commentCreation</url-pattern>
+  </servlet-mapping>
 
 
 
