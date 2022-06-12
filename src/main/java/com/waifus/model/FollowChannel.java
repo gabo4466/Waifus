@@ -1,7 +1,7 @@
 package com.waifus.model;
 
 import com.waifus.daoImp.FollowChannelDaoImp;
-import com.waifus.exceptions.FollowChannelException;
+import com.waifus.exceptions.*;
 
 import java.sql.SQLException;
 
@@ -42,5 +42,9 @@ public class FollowChannel {
 
     public void add() throws SQLException, ClassNotFoundException, FollowChannelException {
         FollowChannelDaoImp.getInstance().add(this);
+    }
+
+    public void delete() throws SQLException, ClassNotFoundException, FollowChannelException {
+        FollowChannelDaoImp.getInstance().delete(this);
     }
 }

@@ -8,6 +8,7 @@ import com.waifus.services.PropertiesService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -36,23 +37,41 @@ public class FollowChannelDaoImp implements GenericDao<FollowChannel> {
     }
 
     @Override
-    public boolean delete(FollowChannel obj) throws SQLException, UserException, ChannelException, ThreadException, MultimediaException {
-        return false;
+    public boolean delete(FollowChannel obj) throws SQLException, FollowChannelException {
+        boolean result = false;
+        String query = "delete from waifus.users_follows_channels where id_user = ? and id_channel = ?";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, obj.getIdUser());
+        stmt.setInt(2, obj.getIdChannel());
+        int rs = stmt.executeUpdate();
+        if (rs > 0){
+            result = true;
+        }
+        return result;
     }
 
     @Override
     public FollowChannel add(FollowChannel obj) throws SQLException, FollowChannelException {
-        FollowChannel result = null;
-        String query = "insert into waifus.users_follows_channels (id_user, id_channel, date_follows) values (?,?,?);";
+        String query = "select date_follows from waifus.users_follows_channels where id_channel = ? and id_user = ?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
         stmt.setInt(1, obj.getIdUser());
         stmt.setInt(2, obj.getIdChannel());
-        stmt.setString(3, obj.getDateFollow());
-        int rs = stmt.executeUpdate();
-        if (rs == 0){
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()){
             throw new FollowChannelException(prop.getProperty("error.follow"));
+        }else{
+            FollowChannel result = null;
+            query = "insert into waifus.users_follows_channels (id_user, id_channel, date_follows) values (?,?,?);";
+            stmt = this.connection.prepareStatement(query);
+            stmt.setInt(1, obj.getIdUser());
+            stmt.setInt(2, obj.getIdChannel());
+            stmt.setString(3, obj.getDateFollow());
+            int rss = stmt.executeUpdate();
+            if (rss == 0){
+                throw new SQLException(prop.getProperty("error.db"));
+            }
         }
-        return result;
+        return null;
     }
 
     @Override

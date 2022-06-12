@@ -124,6 +124,14 @@
     <servlet-name>channel</servlet-name>
     <url-pattern>/channel</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>followChannel</servlet-name>
+    <servlet-class>com.waifus.servlets.FollowChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>followChannel</servlet-name>
+    <url-pattern>/followChannel</url-pattern>
+  </servlet-mapping>
 
 
 
