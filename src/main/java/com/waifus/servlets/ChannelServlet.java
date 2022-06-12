@@ -30,10 +30,8 @@ public class ChannelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<Channel> responseService = new ResponseService<Channel>();
-        String jwt = req.getHeader("Authorization");
         int idChannel = Integer.parseInt(req.getParameter("idChannel"));
         try{
-            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             Channel channel = new Channel();
             channel.setIdChannel(idChannel);
             channel = channel.get();

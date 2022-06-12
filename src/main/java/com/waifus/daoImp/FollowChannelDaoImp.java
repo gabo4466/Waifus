@@ -54,8 +54,8 @@ public class FollowChannelDaoImp implements GenericDao<FollowChannel> {
     public FollowChannel add(FollowChannel obj) throws SQLException, FollowChannelException {
         String query = "select date_follows from waifus.users_follows_channels where id_channel = ? and id_user = ?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
-        stmt.setInt(1, obj.getIdUser());
-        stmt.setInt(2, obj.getIdChannel());
+        stmt.setInt(1, obj.getIdChannel());
+        stmt.setInt(2, obj.getIdUser());
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             throw new FollowChannelException(prop.getProperty("error.follow"));
@@ -99,8 +99,8 @@ public class FollowChannelDaoImp implements GenericDao<FollowChannel> {
     public void follows(FollowChannel obj) throws FollowChannelException, SQLException {
         String query = "select date_follows from waifus.users_follows_channels where id_channel = ? and id_user = ?";
         PreparedStatement stmt = this.connection.prepareStatement(query);
-        stmt.setInt(1, obj.getIdUser());
-        stmt.setInt(2, obj.getIdChannel());
+        stmt.setInt(1, obj.getIdChannel());
+        stmt.setInt(2, obj.getIdUser());
         ResultSet rs = stmt.executeQuery();
         if (!rs.next()){
             throw new FollowChannelException(prop.getProperty("error.follow"));
