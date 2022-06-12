@@ -56,23 +56,41 @@ public class CommentDaoImp implements GenericDao<Comment> {
     @Override
     public Comment add(Comment comment) throws SQLException, CommentException {
         Comment result;
+        PreparedStatement stmt;
+        String query0 = "insert into waifus.comments (content, date_comment, deleted, fk_user, fk_thread) values (?,?,0,?,?);";
         String query = "insert into waifus.comments (content, date_comment, deleted, fk_user, fk_thread, fk_comment) values (?,?,0,?,?,?);";
-        PreparedStatement stmt = this.connection.prepareStatement(query);
-        stmt.setString(1, comment.getContent());
-        stmt.setString(2, comment.getDateComment());
-        stmt.setInt(3, comment.getUser());
-        stmt.setInt(4, comment.getThread());
-        stmt.setInt(5, comment.getComment());
+        if(comment.getComment()==0){
+            stmt = this.connection.prepareStatement(query0);
+            stmt.setString(1, comment.getContent());
+            stmt.setString(2, comment.getDateComment());
+            stmt.setInt(3, comment.getUser());
+            stmt.setInt(4, comment.getThread());
+        }else {
+            stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, comment.getContent());
+            stmt.setString(2, comment.getDateComment());
+            stmt.setInt(3, comment.getUser());
+            stmt.setInt(4, comment.getThread());
+            stmt.setInt(5, comment.getComment());
+        }
         int rs = stmt.executeUpdate();
         if(rs>0){
             query = "select id_comment from waifus.comments where deleted=0 and date_comment=? and fk_thread=? and fk_user=? and fk_comment=?;";
-            stmt = this.connection.prepareStatement(query);
-            stmt.setString(1, comment.getDateComment());
-            stmt.setInt(2, comment.getThread());
-            stmt.setInt(3, comment.getUser());
-            stmt.setInt(4, comment.getComment());
+            query0 = "select id_comment from waifus.comments where deleted=0 and date_comment=? and fk_thread=? and fk_user=?;";
+            if (comment.getComment()==0){
+                stmt = this.connection.prepareStatement(query0);
+                stmt.setString(1, comment.getDateComment());
+                stmt.setInt(2, comment.getThread());
+                stmt.setInt(3, comment.getUser());
+            }else{
+                stmt = this.connection.prepareStatement(query);
+                stmt.setString(1, comment.getDateComment());
+                stmt.setInt(2, comment.getThread());
+                stmt.setInt(3, comment.getUser());
+                stmt.setInt(4, comment.getComment());
+            }
             ResultSet rs2 = stmt.executeQuery();
-            if(!rs2.next()){
+            if(rs2.next()){
                 result = this.get(rs2.getInt("id_comment"));
             }else {
                 result = null;
@@ -111,7 +129,7 @@ public class CommentDaoImp implements GenericDao<Comment> {
         PreparedStatement stmt = this.connection.prepareStatement(query);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
-        if(!rs.next()){
+        if(rs.next()){
             result = new Comment(rs.getInt("id_comment"), rs.getString("content"),
                     rs.getString("date_comment"), rs.getBoolean("deleted"),
                     rs.getInt("fk_user"), rs.getInt("fk_thread"), rs.getInt("fk_comment"));
