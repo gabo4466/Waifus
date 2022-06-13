@@ -125,6 +125,14 @@
     <url-pattern>/channel</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>commentCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.CommentCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>commentCreation</servlet-name>
+    <url-pattern>/commentCreation</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>followChannel</servlet-name>
     <servlet-class>com.waifus.servlets.FollowChannelServlet</servlet-class>
   </servlet>
@@ -151,6 +159,14 @@
 
 
 
+  <servlet>
+    <servlet-name>photoProfile</servlet-name>
+    <servlet-class>com.waifus.servlets.PhotoProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>photoProfile</servlet-name>
+    <url-pattern>/photoProfile</url-pattern>
+  </servlet-mapping>
 
   <filter>
     <filter-name>CorsFilter</filter-name>
