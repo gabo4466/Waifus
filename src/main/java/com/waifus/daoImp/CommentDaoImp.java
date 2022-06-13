@@ -149,7 +149,7 @@ public class CommentDaoImp implements GenericDao<Comment> {
         ArrayList<Comment> result = new ArrayList<Comment>();
         idx -= 1;
         PreparedStatement stmt;
-        String query = "select * from waifus.comments where deleted=0 and fk_thread=? limit ?,?;";
+        String query = "select * from waifus.comments where deleted=0 and fk_thread=? order by date_comment desc limit ?,?;";
         stmt = this.connection.prepareStatement(query);
         stmt.setInt(1, thread);
         stmt.setInt(2, idx);
