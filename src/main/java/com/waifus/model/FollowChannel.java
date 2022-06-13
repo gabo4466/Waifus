@@ -65,10 +65,13 @@ public class FollowChannel {
         FollowChannelDaoImp.getInstance().follows(this);
     }
 
-    public ArrayList<Channel> getFChannels() throws SQLException, ClassNotFoundException {
+    public ArrayList<Channel> getFChannels() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
         ArrayList<FollowChannel> fChannels = FollowChannelDaoImp.getInstance().getFChannels(this);
         ArrayList<Channel> channels = new ArrayList<Channel>();
-
+        for (FollowChannel fChannel:fChannels) {
+            Channel channelAux = new Channel(fChannel.getIdChannel());
+            channels.add(channelAux.get());
+        }
         return channels;
     }
 

@@ -31,15 +31,14 @@ public class FollowChannelSearchServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResponseService<FollowChannel> responseService = new ResponseService<FollowChannel>();
+        ResponseService<ArrayList<Channel>> responseService = new ResponseService<ArrayList<Channel>>();
         String jwt = req.getHeader("Authorization");
         JsonObject json = new JsonObject();
         try {
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             FollowChannel followChannel = new FollowChannel(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
-            ArrayList<Channel> channels = followChannel.getAll();
-            json.add("follow",new JsonPrimitive(true));
-            responseService.outputResponse(resp,json.toString(),200);
+            ArrayList<Channel> channels = followChannel.getFChannels();
+            responseService.outputResponse(resp,responseService.toJson(channels),200);
         }catch (Exception ex) {
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
