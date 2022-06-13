@@ -149,11 +149,30 @@ public class CommentDaoImp implements GenericDao<Comment> {
         ArrayList<Comment> result = new ArrayList<Comment>();
         idx -= 1;
         PreparedStatement stmt;
-        String query = "select * from waifus.comments where deleted=0 and fk_thread=? order by date_comment desc limit ?,?;";
+        String query = "select * from waifus.comments where deleted=0 and fk_thread=? and fk_comment is null order by date_comment desc limit ?,?;";
         stmt = this.connection.prepareStatement(query);
         stmt.setInt(1, thread);
         stmt.setInt(2, idx);
         stmt.setInt(3, pag);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            result.add(new Comment(rs.getInt("id_comment"), rs.getString("content"),
+                    rs.getString("date_comment"), rs.getBoolean("deleted"),
+                    rs.getInt("fk_user"), rs.getInt("fk_thread"), rs.getInt("fk_comment")));
+        }
+        return result;
+    }
+
+    public ArrayList<Comment> threadEmbeddedComment(int idx, int pag, int thread, int comment) throws SQLException {
+        ArrayList<Comment> result = new ArrayList<Comment>();
+        idx -= 1;
+        PreparedStatement stmt;
+        String query = "select * from waifus.comments where deleted=0 and fk_thread=? and fk_comment=? is not null order by date_comment desc limit ?,?;";
+        stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, thread);
+        stmt.setInt(2, comment);
+        stmt.setInt(3, idx);
+        stmt.setInt(4, pag);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             result.add(new Comment(rs.getInt("id_comment"), rs.getString("content"),

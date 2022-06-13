@@ -107,4 +107,8 @@ public class Comment {
     public ArrayList<Comment> search(int idx, int pag, int thread) throws SQLException, ClassNotFoundException {
         return CommentDaoImp.getInstance().threadComments(idx, pag, thread);
     }
+
+    public ArrayList<Comment> searchEmbedded(int idx, int pag, int thread, int comment) throws SQLException, ClassNotFoundException {
+        return CommentDaoImp.getInstance().threadEmbeddedComment(idx, pag, thread, comment);
+    }
 }
