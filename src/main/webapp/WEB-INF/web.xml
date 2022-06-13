@@ -140,6 +140,15 @@
     <servlet-name>profileSearch</servlet-name>
     <url-pattern>/profileSearch</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>followChannelSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.FollowChannelSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>followChannelSearch</servlet-name>
+    <url-pattern>/followChannelSearch</url-pattern>
+  </servlet-mapping>
+
 
 
 
