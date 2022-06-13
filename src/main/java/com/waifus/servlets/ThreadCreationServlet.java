@@ -29,7 +29,23 @@ public class ThreadCreationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        ResponseService<Thread> responseService = new ResponseService<Thread>();
+        int idThread = Integer.parseInt(req.getParameter("idThread"));
+        try {
+            Thread thread = new Thread();
+            thread.setIdThread(idThread);
+            thread = thread.get();
+            String json = responseService.toJson(thread);
+            responseService.outputResponse(resp, json, 200);
+        }catch (SQLException e){
+            System.out.println(prop.getProperty("error.db"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.db")), 400);
+        }catch (Exception e){
+            System.out.println(prop.getProperty("error.generic"));
+            System.out.println(e.getMessage());
+            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
+        }
     }
 
     @Override

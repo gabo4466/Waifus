@@ -116,6 +116,31 @@
     <servlet-name>images</servlet-name>
     <url-pattern>/images/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>channel</servlet-name>
+    <servlet-class>com.waifus.servlets.ChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>channel</servlet-name>
+    <url-pattern>/channel</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>followChannel</servlet-name>
+    <servlet-class>com.waifus.servlets.FollowChannelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>followChannel</servlet-name>
+    <url-pattern>/followChannel</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>profileSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.ProfileSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>profileSearch</servlet-name>
+    <url-pattern>/profileSearch</url-pattern>
+  </servlet-mapping>
+
 
 
   <filter>

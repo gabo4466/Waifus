@@ -39,12 +39,10 @@ public class MultimediaCreationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<Multimedia> responseService = new ResponseService<Multimedia>();
-        String jwt = req.getHeader("Authorization");
-        int idThread = Integer.parseInt(req.getHeader("idThread"));
+        int idThread = Integer.parseInt(req.getParameter("idThread"));
         try {
             Multimedia multimedia = new Multimedia();
             ArrayList<Multimedia> multimediaArray = new ArrayList<Multimedia>();
-            JWTService.verifyJWT(jwt);
             multimediaArray = multimedia.search(idThread);
             JsonObject json = new JsonObject();
             json.add("multimediaArray", new Gson().toJsonTree(multimediaArray));

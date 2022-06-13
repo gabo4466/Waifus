@@ -116,17 +116,19 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     public ArrayList<Thread> search(int idx, int pag, String term) throws SQLException {
         ArrayList<Thread> result = new ArrayList<Thread>();
         PreparedStatement stmt;
-        String queryNoTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where name limit ?,?;";
-        String queryTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where name like '%'+?+'%' and deleted=0 limit ?,?;";
+        idx -= 1;
+        System.out.println(term);
+        String queryNoTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where deleted=0 limit ?,?;";
+        String queryTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where name like ? and deleted=0 limit ?,?;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
             stmt.setInt(1, idx);
-            stmt.setInt(2, idx+pag);
+            stmt.setInt(2, pag);
         }else {
             stmt = this.connection.prepareStatement(queryTerm);
-            stmt.setString(1, term);
+            stmt.setString(1, "%"+term+"%");
             stmt.setInt(2, idx);
-            stmt.setInt(3, idx+pag);
+            stmt.setInt(3, pag);
         }
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {

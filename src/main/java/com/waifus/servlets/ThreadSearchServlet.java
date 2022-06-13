@@ -2,6 +2,7 @@ package com.waifus.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.waifus.model.Thread;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
@@ -34,8 +35,10 @@ public class ThreadSearchServlet extends HttpServlet {
         String term = req.getParameter("term");
         try {
             threads = thread.search(idx, pag, term);
+            int count = thread.count(term);
             JsonObject json = new JsonObject();
             json.add("threads", new Gson().toJsonTree(threads));
+            json.add("count", new JsonPrimitive(count));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("error.db"));
