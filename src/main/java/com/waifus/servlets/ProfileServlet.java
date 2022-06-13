@@ -58,6 +58,7 @@ public class ProfileServlet extends HttpServlet {
         String jwt = req.getHeader("Authorization");
         ResponseService<User> responseService = new ResponseService<User>();
         User user = new Gson().fromJson(req.getReader(), User.class);
+        user.setActivated(true);
         try{
             DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
             int id = Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser")));
