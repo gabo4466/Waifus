@@ -148,6 +148,14 @@
     <servlet-name>profileSearch</servlet-name>
     <url-pattern>/profileSearch</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>commentSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.CommentSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>commentSearch</servlet-name>
+    <url-pattern>/commentSearch</url-pattern>
+  </servlet-mapping>
 
 
   <servlet>
