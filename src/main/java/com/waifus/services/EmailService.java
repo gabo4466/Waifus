@@ -11,6 +11,7 @@ public class EmailService {
     public static Properties prop2;
 
     public EmailService() {
+        prop2 = PropertiesService.getProperties("hidden");
         prop = PropertiesService.getProperties("config_es");
     }
 
@@ -23,11 +24,11 @@ public class EmailService {
         properties.put("mail.smtp.auth", "true");
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(prop.getProperty("email.account"), prop.getProperty("email.pass"));
+                return new PasswordAuthentication(prop2.getProperty("email.account"), prop2.getProperty("email.pass"));
             }
         });
         MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(prop.getProperty("email.account")));
+        message.setFrom(new InternetAddress(prop2.getProperty("email.account")));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
         message.setSubject(subject);
         message.setText(html, "UTF-8", "html");

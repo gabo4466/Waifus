@@ -7,9 +7,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.waifus.exceptions.UserException;
 import com.waifus.model.User;
+import com.waifus.services.JWTService;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
-import com.waifus.services.JWTService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ProfileServlet extends HttpServlet {
+public class ProfileSearchServlet extends HttpServlet {
     private Properties prop;
 
     @Override
@@ -31,10 +31,9 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ResponseService<User> responseService = new ResponseService<User>();
-        String jwt = req.getHeader("Authorization");
+        int idUser = Integer.parseInt(req.getParameter("idUser"));
         try{
-            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
-            User user = new User (Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
+            User user = new User(idUser);
             user = user.get();
             String jsonUser = responseService.toJson(user);
             responseService.outputResponse(resp, jsonUser,200);
@@ -55,39 +54,5 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String jwt = req.getHeader("Authorization");
-        ResponseService<User> responseService = new ResponseService<User>();
-        User user = new Gson().fromJson(req.getReader(), User.class);
-        user.setActivated(true);
-        try{
-            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
-            int id = Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser")));
-            if (id==user.getIdUser()){
-                user.setIdUser(id);
-                user.update();
-                JsonObject json = new JsonObject();
-                json.add("respact", new JsonPrimitive(prop.getProperty("act.user")));
-                responseService.outputResponse(resp, json.toString(), 200);
-            }else {
-                responseService.notLoggedResponse(resp);
-            }
-
-        }catch (SQLException e){
-            System.out.println(prop.getProperty("db.failed"));
-            System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("resp.error")), 400);
-        } catch (UserException e) {
-            System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
-        }catch (JWTVerificationException e){
-            responseService.notLoggedResponse(resp);
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println(prop.getProperty("resp.error"));
-            System.out.println(e.getMessage());
-            responseService.outputResponse(resp, responseService.errorResponse(e.getMessage()), 200);
-
-        }
-
     }
 }

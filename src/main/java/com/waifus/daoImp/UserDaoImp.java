@@ -1,6 +1,7 @@
 package com.waifus.daoImp;
 
 import com.waifus.exceptions.UserNotFoundException;
+import com.waifus.model.Channel;
 import com.waifus.services.DBConnection;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.UserException;
@@ -66,8 +67,20 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public boolean delete(User obj) {
-        return false;
+    public boolean delete(User user) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set banned=? where id_user=?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setBoolean(1, user.isBanned());
+        stmt.setInt(2, user.getIdUser());
+        int rs = stmt.executeUpdate();
+        if(rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("error.generic"));
+        }
+        return result;
     }
 
     /**
@@ -87,7 +100,7 @@ public class UserDaoImp implements GenericDao<User> {
         stmt.setString(2, user.getNickname());
         ResultSet rs = stmt.executeQuery();
         if (!rs.next()){
-            query = "insert into waifus.users (email, nickname, name, password, birthday, adult_content, admin, activated, banned, karma) values (?,?,?,?,?,?,0,0,0,0);";
+            query = "insert into waifus.users (email, nickname, name, password, birthday, adult_content, admin, activated, banned, karma, profile_photo) values (?,?,?,?,?,?,0,0,0,0,'profileDefault.png');";
             PreparedStatement stmt2 = this.connection.prepareStatement(query);
             stmt2.setString(1, user.getEmail());
             stmt2.setString(2, user.getNickname());
@@ -119,13 +132,47 @@ public class UserDaoImp implements GenericDao<User> {
     }
 
     @Override
-    public ArrayList<User> getAll(int idx, int pag) {
-        return null;
+    public ArrayList<User> getAll() throws SQLException {
+        ArrayList<User> result = new ArrayList<User>();
+        String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            result.add(new User(rs.getInt("id_user"), rs.getString("gender"),
+                    rs.getBoolean("adult_content"), rs.getString("nickname"),
+                    rs.getBoolean("admin"), rs.getString("name"),
+                    rs.getString("email"), rs.getString("birthday"),
+                    rs.getString("profile_photo"), rs.getString("country"),
+                    rs.getString("description"), rs.getInt("karma"),
+                    rs.getString("theme")));
+        }
+        return result;
     }
 
     @Override
-    public ArrayList<User> search(int idx, int pag, String term) {
-        return null;
+    public ArrayList<User> search(int idx, int pag, String term) throws SQLException {
+        ArrayList<User> result = new ArrayList<User>();
+        PreparedStatement stmt;
+        String queryNoTerm = "select id_user, gender, nickname, name, profile_photo, country, description, karma from waifus.users;";
+        String queryTerm = "select id_user, gender, nickname, name, profile_photo, country, description, karma from waifus.users where nickname like '%'+?+'%' and banned=0 and activated=1 limit ?,?;";
+        if(term.equals("")){
+            stmt = this.connection.prepareStatement(queryNoTerm);
+            stmt.setInt(1, idx);
+            stmt.setInt(2, idx+pag);
+        }else {
+            stmt = this.connection.prepareStatement(queryTerm);
+            stmt.setString(1, term);
+            stmt.setInt(2, idx);
+            stmt.setInt(3, idx+pag);
+        }
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            result.add(new User(rs.getInt("id_user"), rs.getString("gender"),
+                    rs.getString("nickname"), rs.getString("name"),
+                    rs.getString("profile_photo"), rs.getString("country"),
+                    rs.getString("description"), rs.getInt("karma")));
+        }
+        return result;
     }
 
     /**
@@ -223,6 +270,25 @@ public class UserDaoImp implements GenericDao<User> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()){
             result = rs.getInt("id_user");
+        }
+        return result;
+    }
+
+    @Override
+    public int count(String term) throws SQLException {
+        int result = 0;
+        PreparedStatement stmt;
+        String queryNoTerm = "select count(*) as Quantity from waifus.users;";
+        String queryTerm = "select count(*) as Quantity from waifus.users where nickname like '%'+?+'%' and banned=0 and activated=1;";
+        if(term.equals("")){
+            stmt = this.connection.prepareStatement(queryNoTerm);
+        }else {
+            stmt = this.connection.prepareStatement(queryTerm);
+            stmt.setString(1, term);
+        }
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            result = rs.getInt("Quantity");
         }
         return result;
     }
