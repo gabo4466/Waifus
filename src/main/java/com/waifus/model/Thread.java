@@ -115,10 +115,10 @@ public class Thread {
     }
 
     public ArrayList<Thread> search(int idx, int pag, String term) throws SQLException, ClassNotFoundException {
-        return ThreadDaoImp.getInstance().search(idx, pag, term);
+        return ThreadDaoImp.getInstance().search(idx, pag, term, this);
     }
 
     public int count(String term) throws SQLException, ClassNotFoundException {
-        return ThreadDaoImp.getInstance().count(term);
+        return ThreadDaoImp.getInstance().count(term, this);
     }
 }

@@ -139,6 +139,34 @@ public class ThreadDaoImp implements GenericDao<Thread> {
         return result;
     }
 
+    public ArrayList<Thread> search(int idx, int pag, String term, Thread obj) throws SQLException {
+        ArrayList<Thread> result = new ArrayList<Thread>();
+        PreparedStatement stmt;
+        idx -= 1;
+        System.out.println(term);
+        String queryNoTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where deleted=0 and fk_channel = ? limit ?,?;";
+        String queryTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where name like ? and deleted=0 and fk_channel = ? limit ?,?;";
+        if(term.equals("")){
+            stmt = this.connection.prepareStatement(queryNoTerm);
+            stmt.setInt(1, obj.getChannel());
+            stmt.setInt(2, idx);
+            stmt.setInt(3, pag);
+        }else {
+            stmt = this.connection.prepareStatement(queryTerm);
+            stmt.setString(1, "%"+term+"%");
+            stmt.setInt(2, obj.getChannel());
+            stmt.setInt(3, idx);
+            stmt.setInt(4, pag);
+        }
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            result.add(new Thread(rs.getInt("id_thread"), rs.getString("date_thread"),
+                    rs.getString("name"), rs.getString("content"),
+                    rs.getInt("fk_user"), rs.getInt("fk_channel")));
+        }
+        return result;
+    }
+
     @Override
     public Thread get(int id) throws SQLException, ThreadNotFoundException {
         Thread result=null;
@@ -169,6 +197,26 @@ public class ThreadDaoImp implements GenericDao<Thread> {
         }else {
             stmt = this.connection.prepareStatement(queryTerm);
             stmt.setString(1, term);
+        }
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            result = rs.getInt("Quantity");
+        }
+        return result;
+    }
+
+    public int count(String term, Thread obj) throws SQLException {
+        int result = 0;
+        PreparedStatement stmt;
+        String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0 and fk_channel = ?;";
+        String queryTerm = "select count(*) as Quantity from waifus.threads where name like '%'+?+'%' and deleted=0 and fk_channel = ?;";
+        if(term.equals("")){
+            stmt = this.connection.prepareStatement(queryNoTerm);
+            stmt.setInt(1, obj.getChannel());
+        }else {
+            stmt = this.connection.prepareStatement(queryTerm);
+            stmt.setString(1, term);
+            stmt.setInt(2, obj.getChannel());
         }
         ResultSet rs = stmt.executeQuery();
         if(rs.next()){
