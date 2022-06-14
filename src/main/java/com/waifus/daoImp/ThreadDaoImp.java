@@ -191,12 +191,12 @@ public class ThreadDaoImp implements GenericDao<Thread> {
         int result = 0;
         PreparedStatement stmt;
         String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0;";
-        String queryTerm = "select count(*) as Quantity from waifus.threads where name like '%'+?+'%' and deleted=0;";
+        String queryTerm = "select count(*) as Quantity from waifus.threads where name like ? and deleted=0;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
         }else {
             stmt = this.connection.prepareStatement(queryTerm);
-            stmt.setString(1, term);
+            stmt.setString(1, "%"+term+"%");
         }
         ResultSet rs = stmt.executeQuery();
         if(rs.next()){
@@ -209,13 +209,13 @@ public class ThreadDaoImp implements GenericDao<Thread> {
         int result = 0;
         PreparedStatement stmt;
         String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0 and fk_channel = ?;";
-        String queryTerm = "select count(*) as Quantity from waifus.threads where name like '%'+?+'%' and deleted=0 and fk_channel = ?;";
+        String queryTerm = "select count(*) as Quantity from waifus.threads where name like ? and deleted=0 and fk_channel = ?;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
             stmt.setInt(1, obj.getChannel());
         }else {
             stmt = this.connection.prepareStatement(queryTerm);
-            stmt.setString(1, term);
+            stmt.setString(1, "%"+term+"%");
             stmt.setInt(2, obj.getChannel());
         }
         ResultSet rs = stmt.executeQuery();
