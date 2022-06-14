@@ -196,4 +196,27 @@ public class ChannelDaoImp implements GenericDao<Channel> {
         }
         return true;
     }
+
+    public int count(int id) throws SQLException {
+        int result = 0;
+        String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0 and fk_channel = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(queryNoTerm);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            result = rs.getInt("Quantity");
+        }
+        return result;
+    }
+
+    public ArrayList<Channel> channelsWMostThreads() throws SQLException {
+        ArrayList<Channel> result = new ArrayList<Channel>();
+        String query = "select fk_channel from waifus.threads group by fk_channel order by count(fk_channel) desc limit 5";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()){
+            result.add(new Channel(rs.getInt("fk_channel")));
+        }
+        return result;
+    }
 }

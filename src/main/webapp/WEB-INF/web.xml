@@ -164,6 +164,22 @@
     <servlet-name>followChannelSearch</servlet-name>
     <url-pattern>/followChannelSearch</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>mostThreads</servlet-name>
+    <servlet-class>com.waifus.servlets.MostThreadsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mostThreads</servlet-name>
+    <url-pattern>/mostThreads</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>karmaRank</servlet-name>
+    <servlet-class>com.waifus.servlets.KarmaRankServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>karmaRank</servlet-name>
+    <url-pattern>/karmaRank</url-pattern>
+  </servlet-mapping>
 
 
 

@@ -292,4 +292,21 @@ public class UserDaoImp implements GenericDao<User> {
         }
         return result;
     }
+
+    public ArrayList<User> mostKarmaUsers() throws SQLException {
+        ArrayList<User> result = new ArrayList<User>();
+        String query = "select id_user, email, gender, adult_content, nickname, admin, name, birthday, profile_photo, country, description, karma, theme from waifus.users order by karma desc limit 5;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()){
+            result.add(new User(rs.getInt("id_user"), rs.getString("gender"),
+                    rs.getBoolean("adult_content"), rs.getString("nickname"),
+                    rs.getBoolean("admin"), rs.getString("name"),
+                    rs.getString("email"), rs.getString("birthday"),
+                    rs.getString("profile_photo"), rs.getString("country"),
+                    rs.getString("description"), rs.getInt("karma"),
+                    rs.getString("theme")));
+        }
+        return result;
+    }
 }

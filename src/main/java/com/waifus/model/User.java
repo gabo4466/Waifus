@@ -331,4 +331,8 @@ public class User {
     public int count(String term) throws SQLException, ClassNotFoundException {
         return UserDaoImp.getInstance().count(term);
     }
+
+    public ArrayList<User>  mostKarmaUsers() throws SQLException, ClassNotFoundException {
+        return UserDaoImp.getInstance().mostKarmaUsers();
+    }
 }
