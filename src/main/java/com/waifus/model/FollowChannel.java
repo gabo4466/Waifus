@@ -4,6 +4,7 @@ import com.waifus.daoImp.FollowChannelDaoImp;
 import com.waifus.exceptions.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FollowChannel {
     private int idChannel;
@@ -14,6 +15,13 @@ public class FollowChannel {
         this.idChannel = idChannel;
         this.idUser = idUser;
         this.dateFollow = dateFollow;
+    }
+
+    public FollowChannel() {
+    }
+
+    public FollowChannel(int idUser) {
+        this.idUser = idUser;
     }
 
     public FollowChannel(int idChannel, int idUser) {
@@ -55,6 +63,16 @@ public class FollowChannel {
 
     public void follows() throws SQLException, ClassNotFoundException, FollowChannelException {
         FollowChannelDaoImp.getInstance().follows(this);
+    }
+
+    public ArrayList<Channel> getFChannels() throws SQLException, ClassNotFoundException, ChannelNotFoundException {
+        ArrayList<FollowChannel> fChannels = FollowChannelDaoImp.getInstance().getFChannels(this);
+        ArrayList<Channel> channels = new ArrayList<Channel>();
+        for (FollowChannel fChannel:fChannels) {
+            Channel channelAux = new Channel(fChannel.getIdChannel());
+            channels.add(channelAux.get());
+        }
+        return channels;
     }
 
 }

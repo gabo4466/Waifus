@@ -107,4 +107,18 @@ public class FollowChannelDaoImp implements GenericDao<FollowChannel> {
         }
     }
 
+    public ArrayList<FollowChannel> getFChannels(FollowChannel obj) throws SQLException {
+        ArrayList<FollowChannel> fChannels = new ArrayList<FollowChannel>();
+        String query = "select id_channel from waifus.users_follows_channels where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, obj.getIdUser());
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()){
+            FollowChannel fChannelAux = new FollowChannel();
+            fChannelAux.setIdChannel(rs.getInt("id_channel"));
+            fChannels.add(fChannelAux);
+        }
+        return fChannels;
+    }
+
 }

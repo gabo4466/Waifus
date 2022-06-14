@@ -33,7 +33,9 @@ public class ThreadSearchServlet extends HttpServlet {
         int idx = Integer.parseInt(req.getParameter("idx"));
         int pag = Integer.parseInt(req.getParameter("pag"));
         String term = req.getParameter("term");
+        int idChannel = Integer.parseInt(req.getParameter("idChannel"));
         try {
+            thread.setChannel(idChannel);
             threads = thread.search(idx, pag, term);
             int count = thread.count(term);
             JsonObject json = new JsonObject();

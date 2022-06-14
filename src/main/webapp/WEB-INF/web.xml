@@ -125,6 +125,14 @@
     <url-pattern>/channel</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>commentCreation</servlet-name>
+    <servlet-class>com.waifus.servlets.CommentCreationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>commentCreation</servlet-name>
+    <url-pattern>/commentCreation</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>followChannel</servlet-name>
     <servlet-class>com.waifus.servlets.FollowChannelServlet</servlet-class>
   </servlet>
@@ -140,6 +148,23 @@
     <servlet-name>profileSearch</servlet-name>
     <url-pattern>/profileSearch</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>commentSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.CommentSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>commentSearch</servlet-name>
+    <url-pattern>/commentSearch</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>followChannelSearch</servlet-name>
+    <servlet-class>com.waifus.servlets.FollowChannelSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>followChannelSearch</servlet-name>
+    <url-pattern>/followChannelSearch</url-pattern>
+  </servlet-mapping>
+
 
 
   <servlet>
