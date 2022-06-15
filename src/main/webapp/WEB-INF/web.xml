@@ -181,36 +181,12 @@
     <url-pattern>/karmaRank</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>likeComment</servlet-name>
-    <servlet-class>com.waifus.servlets.LikeCommentServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>likeComment</servlet-name>
-    <url-pattern>/likeComment</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>dislikeComment</servlet-name>
-    <servlet-class>com.waifus.servlets.DislikeCommentServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>dislikeComment</servlet-name>
-    <url-pattern>/dislikeComment</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>likeThread</servlet-name>
     <servlet-class>com.waifus.servlets.LikeThreadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>likeThread</servlet-name>
     <url-pattern>/likeThread</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>dislikeThread</servlet-name>
-    <servlet-class>com.waifus.servlets.DislikeThreadServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>dislikeThread</servlet-name>
-    <url-pattern>/dislikeThread</url-pattern>
   </servlet-mapping>
 
 

@@ -1,10 +1,13 @@
 package com.waifus.servlets;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.waifus.model.LikeThread;
 import com.waifus.model.Thread;
 import com.waifus.model.User;
+import com.waifus.services.JWTService;
 import com.waifus.services.PropertiesService;
 import com.waifus.services.ResponseService;
 
@@ -27,17 +30,24 @@ public class LikeThreadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String dateLike = req.getParameter("dateLike");
         ResponseService<User> responseService = new ResponseService<User>();
         Thread thread = new Thread(Integer.parseInt(req.getParameter("idThread")));
+        String jwt = req.getHeader("Authorization");
         try {
+            DecodedJWT decodedJWT = JWTService.verifyJWT(jwt);
+            LikeThread likeThread = new LikeThread(thread.getIdThread(), Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))), dateLike);
+            likeThread.add();
             thread = thread.get();
-            int idUser = thread.getUser();
-            User user = new User(idUser);
-            user.likeThread();
-            user = user.get();
+            User userThread = new User(thread.getUser());
+            userThread.karmaChange(1);
             JsonObject json = new JsonObject();
             json.add("like", new JsonPrimitive("ok"));
-            json.add("user", new Gson().toJsonTree(user));
             responseService.outputResponse(resp, json.toString(), 200);
         }catch (SQLException e){
             System.out.println(prop.getProperty("error.db"));
@@ -48,10 +58,5 @@ public class LikeThreadServlet extends HttpServlet {
             System.out.println(e.getMessage());
             responseService.outputResponse(resp, responseService.errorResponse(prop.getProperty("error.generic")), 400);
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }
