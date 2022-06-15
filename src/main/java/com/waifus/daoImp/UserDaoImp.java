@@ -309,4 +309,64 @@ public class UserDaoImp implements GenericDao<User> {
         }
         return result;
     }
+
+    public boolean likeComment(int id) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set karma = (karma + 1) where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        int rs = stmt.executeUpdate();
+        if (rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("error.generic"));
+        }
+        return result;
+    }
+
+    public boolean dislikeComment(int id) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set karma = karma - 2 where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        int rs = stmt.executeUpdate();
+        if (rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("error.generic"));
+        }
+        return result;
+    }
+
+    public boolean likeThread(int id) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set karma = karma + 1 where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        int rs = stmt.executeUpdate();
+        if (rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("error.generic"));
+        }
+        return result;
+    }
+
+    public boolean dislikeThread(int id) throws SQLException, UserException {
+        boolean result;
+        String query = "update waifus.users set karma = karma - 2 where id_user = ?;";
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        int rs = stmt.executeUpdate();
+        if (rs>0){
+            result = true;
+        }else {
+            result = false;
+            throw new UserException(prop.getProperty("error.generic"));
+        }
+        return result;
+    }
 }

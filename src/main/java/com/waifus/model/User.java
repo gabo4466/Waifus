@@ -335,4 +335,20 @@ public class User {
     public ArrayList<User>  mostKarmaUsers() throws SQLException, ClassNotFoundException {
         return UserDaoImp.getInstance().mostKarmaUsers();
     }
+
+    public boolean likeComment() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().likeComment(this.idUser);
+    }
+
+    public boolean dislikeCommment() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().dislikeComment(this.idUser);
+    }
+
+    public boolean likeThread() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().likeThread(this.idUser);
+    }
+
+    public boolean dislikeThread() throws SQLException, ClassNotFoundException, UserException {
+        return UserDaoImp.getInstance().dislikeThread(this.idUser);
+    }
 }
