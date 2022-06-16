@@ -4,6 +4,7 @@ import com.waifus.daoImp.FollowChannelDaoImp;
 import com.waifus.daoImp.LikeThreadDaoImp;
 import com.waifus.exceptions.ChannelNotFoundException;
 import com.waifus.exceptions.FollowChannelException;
+import com.waifus.exceptions.LikeThreadException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class LikeThread {
         this.dateLike = dateLike;
     }
 
-    public void add() throws SQLException, ClassNotFoundException, FollowChannelException {
+    public void add() throws SQLException, ClassNotFoundException, FollowChannelException, LikeThreadException {
         LikeThreadDaoImp.getInstance().add(this);
     }
 
