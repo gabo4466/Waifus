@@ -18,6 +18,8 @@ public class Channel {
     private boolean deleted;
     private int user;
 
+    private int threads;
+
     public Channel() {
     }
 
@@ -110,6 +112,14 @@ public class Channel {
         this.user = user;
     }
 
+    public int getThreads() {
+        return threads;
+    }
+
+    public void setThreads(int threads) {
+        this.threads = threads;
+    }
+
     public Channel add() throws SQLException, ClassNotFoundException, ChannelException, IOException, ChannelNotFoundException {
         return ChannelDaoImp.getInstance().add(this);
     }
@@ -140,5 +150,13 @@ public class Channel {
 
     public boolean nameCheck() throws SQLException, ClassNotFoundException {
         return ChannelDaoImp.getInstance().nameCheck(this);
+    }
+
+    public ArrayList<Channel> channelsWMostThreads() throws SQLException, ClassNotFoundException {
+        return ChannelDaoImp.getInstance().channelsWMostThreads();
+    }
+
+    public int count() throws SQLException, ClassNotFoundException {
+        return ChannelDaoImp.getInstance().count(this.idChannel);
     }
 }

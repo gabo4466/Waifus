@@ -39,6 +39,10 @@ public class Thread {
         this.channel = channel;
     }
 
+    public Thread(int idThread) {
+        this.idThread = idThread;
+    }
+
     public int getIdThread() {
         return idThread;
     }

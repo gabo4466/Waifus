@@ -28,6 +28,10 @@ public class Comment {
         this.comment = comment;
     }
 
+    public Comment(int idComment) {
+        this.idComment = idComment;
+    }
+
     public int getIdComment() {
         return idComment;
     }

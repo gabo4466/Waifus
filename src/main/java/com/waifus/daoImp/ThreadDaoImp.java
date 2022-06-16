@@ -3,6 +3,7 @@ package com.waifus.daoImp;
 import com.waifus.dao.GenericDao;
 import com.waifus.exceptions.ThreadException;
 import com.waifus.exceptions.ThreadNotFoundException;
+import com.waifus.model.Channel;
 import com.waifus.services.DBConnection;
 import com.waifus.services.PropertiesService;
 import com.waifus.model.Thread;
@@ -144,8 +145,8 @@ public class ThreadDaoImp implements GenericDao<Thread> {
         PreparedStatement stmt;
         idx -= 1;
         System.out.println(term);
-        String queryNoTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where deleted=0 and fk_channel = ? limit ?,?;";
-        String queryTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where name like ? and deleted=0 and fk_channel = ? limit ?,?;";
+        String queryNoTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where deleted=0 and fk_channel = ? order by date_thread desc limit ?,?;";
+        String queryTerm = "select id_thread, date_thread, name, content, fk_user, fk_channel from waifus.threads where name like ? and deleted=0 and fk_channel = ? order by date_thread desc limit ?,?;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
             stmt.setInt(1, obj.getChannel());
@@ -190,8 +191,8 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     public int count(String term) throws SQLException {
         int result = 0;
         PreparedStatement stmt;
-        String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0;";
-        String queryTerm = "select count(*) as Quantity from waifus.threads where name like ? and deleted=0;";
+        String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0 order by date_thread desc;";
+        String queryTerm = "select count(*) as Quantity from waifus.threads where name like ? and deleted=0 order by date_thread desc;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
         }else {
@@ -208,8 +209,8 @@ public class ThreadDaoImp implements GenericDao<Thread> {
     public int count(String term, Thread obj) throws SQLException {
         int result = 0;
         PreparedStatement stmt;
-        String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0 and fk_channel = ?;";
-        String queryTerm = "select count(*) as Quantity from waifus.threads where name like ? and deleted=0 and fk_channel = ?;";
+        String queryNoTerm = "select count(*) as Quantity from waifus.threads where deleted=0 and fk_channel = ? order by date_thread desc;";
+        String queryTerm = "select count(*) as Quantity from waifus.threads where name like ? and deleted=0 and fk_channel = ? order by date_thread desc;";
         if(term.equals("")){
             stmt = this.connection.prepareStatement(queryNoTerm);
             stmt.setInt(1, obj.getChannel());
