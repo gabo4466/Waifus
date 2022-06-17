@@ -18,7 +18,7 @@ public class EmailService {
     public void sendMail(String html, String to, String subject) throws MessagingException{
         Properties properties = new Properties();
 
-        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.host", "nebrijanos-com.correoseguro.dinaserver.com");
         properties.put("mail.smtp.port", "465");
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");

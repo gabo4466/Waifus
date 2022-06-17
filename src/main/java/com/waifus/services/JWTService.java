@@ -28,6 +28,7 @@ public class JWTService {
                 .withClaim("admin", user.isAdmin())
                 .withClaim("name", user.getName())
                 .withClaim("email", user.getEmail())
+                .withClaim("karma", user.getKarma())
                 .withIssuer("gjm")
                 .withExpiresAt(expireDate)
                 .sign(algorithm);

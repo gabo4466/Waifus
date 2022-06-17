@@ -60,7 +60,7 @@ public class ChannelCreationServlet extends HttpServlet {
             JsonObject json = new JsonObject();
             json.add("added", new JsonPrimitive("ko"));
             channel.setUser(Integer.parseInt(String.valueOf(decodedJWT.getClaim("idUser"))));
-            if (Boolean.parseBoolean(String.valueOf(decodedJWT.getClaim("admin")))){
+            if (Boolean.parseBoolean(String.valueOf(decodedJWT.getClaim("admin"))) || Integer.parseInt(String.valueOf(decodedJWT.getClaim("karma"))) >= 1000){
                 channel=channel.add();
                 json.add("added", new JsonPrimitive("ok"));
                 json.add("channel", new Gson().toJsonTree(channel));
